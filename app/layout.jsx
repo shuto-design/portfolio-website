@@ -1,3 +1,5 @@
+import "./globals.css";
+
 export const metadata = {
   title: "shuto.design",
 };
@@ -5,7 +7,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0 }}>{children}</body>
+      <body className="bg-paper font-display text-ink">{children}</body>
     </html>
   );
 }

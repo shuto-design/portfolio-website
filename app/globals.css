@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  /* Placeholder tokens — these are the knobs to iterate on while concepting.
+     Every token here automatically becomes a utility class:
+     --color-ink  ->  text-ink, bg-ink, border-ink, ... */
+
+  --color-ink: oklch(0.15 0 0);
+  --color-paper: oklch(0.99 0 0);
+  --color-accent: oklch(0.65 0.19 25);
+
+  --font-display: ui-sans-serif, system-ui, sans-serif;
+
+  --text-hero: clamp(3rem, 12vw, 9rem);
+}
