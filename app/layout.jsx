@@ -53,10 +53,46 @@ export const metadata = {
   },
 };
 
+/**
+ * Decides whether the homepage intro should play, and marks it played.
+ *
+ * This has to run before the browser's first paint, otherwise the finished
+ * homepage would flash up for a frame before the intro started. An inline
+ * script at the top of <body> executes synchronously during HTML parsing, which
+ * is early enough. (Next's "Preventing Flash Before Hydration" guide covers
+ * this pattern.)
+ *
+ * It also gives us once-per-session for free: inline scripts do not re-execute
+ * on client-side navigation, so coming back from /work to / leaves the
+ * attribute alone and the intro stays finished.
+ *
+ * sessionStorage throws outright in some privacy modes, hence the try/catch.
+ * Failing means no intro, which is the safe direction.
+ */
+const INTRO_GATE = `
+(function () {
+  try {
+    if (sessionStorage.getItem("intro") === "played") return;
+    sessionStorage.setItem("intro", "played");
+    document.documentElement.dataset.intro = "run";
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={geist.variable}>
+    // suppressHydrationWarning because the script above sets a data attribute
+    // on <html> before React hydrates. Without it React would treat the
+    // attribute it did not render as a mismatch.
+    <html lang="en" className={geist.variable} suppressHydrationWarning>
       <body className="bg-background font-sans text-foreground">
+        <script
+          type={
+            typeof window === "undefined" ? "text/javascript" : "text/plain"
+          }
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: INTRO_GATE }}
+        />
         {children}
         <Analytics />
       </body>

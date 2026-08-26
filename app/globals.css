@@ -64,6 +64,21 @@
   /* "Graphic Designer" — deliberately NOT the same curve as the hero.
      The frame puts it near 15px on a real phone; the floor holds 16px. */
   --text-label: clamp(1rem, 3.16vw, 3.8rem);
+
+  /* --- The resolved homepage (frame 5) ------------------------------------
+     The small "Shuto." that the hero shrinks into, plus the nav, the featured
+     title and its caption. All four derived from frame 5 as a percentage of
+     frame width, then floored so they stay readable on a phone: 0.87vw is
+     3.4px at 390px wide, which is why the caption has a 14px floor. */
+  --text-wordmark: clamp(1.25rem, 2.49vw, 3rem);
+  --text-nav: clamp(0.875rem, 1.4vw, 1.75rem);
+  --text-featured: clamp(1rem, 1.68vw, 2rem);
+  --text-caption: clamp(0.875rem, 0.87vw, 1.125rem);
+
+  /* The page's side margin — 2.5% of width, measured off frame 5 and now used
+     site-wide. Sitting in the `--spacing-*` namespace makes it a real utility:
+     px-gutter, mx-gutter, and so on. intro.css reads it as var(--spacing-gutter). */
+  --spacing-gutter: clamp(1.25rem, 2.5vw, 3rem);
 }
 
 /* ---------------------------------------------------------------------------

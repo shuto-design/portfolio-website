@@ -1,0 +1,205 @@
+/* ============================================================================
+   HOMEPAGE INTRO ANIMATION
+
+   The line loads left to right, "Graphic Designer" rides its leading edge, then
+   the line splits — one half travelling up to become the header rule, the other
+   down to become the rule under the caption. "Shuto." shrinks into the header.
+
+   THE SAFETY PROPERTY, which is the most important thing in this file:
+
+     Every rule below is gated on html[data-intro="run"]. The finished page is
+     the plain CSS default; the intro is the deviation from it. So if JavaScript
+     fails, or the visitor prefers reduced motion, or the intro already played
+     this session, none of this applies and the page simply renders finished.
+     There is no state in which a visitor sees a blank screen.
+
+   Only `transform` and `opacity` are animated. Neither triggers layout, so this
+   stays smooth on a phone. Animating width or font-size instead would relayout
+   the page on every frame.
+
+   The elements sit at their FINAL size and position in the markup, and the intro
+   transforms them backwards to their starting state. That ordering matters: it
+   means the wordmark ends at scale(1) and renders crisply, rather than ending
+   scaled and permanently slightly soft.
+   ============================================================================ */
+
+:root {
+  /* Total duration. The percentages in the keyframes below are fractions of it:
+     43.75% = 0.7s (line finishes loading), 53% = 0.85s (split begins). */
+  --intro-total: 1.6s;
+
+  /* Two positions read off the frames, as fractions of viewport height: where
+     the loading line sits, and where the big "Shuto." cap-top sits. Kept
+     unitless so the measure script in page.jsx can read the same numbers —
+     these are the single source of truth for both. */
+  --intro-line-y: 0.638;
+  --intro-wordmark-y: 0.449;
+
+  /* The load phase eases out like a real progress bar; the split eases in and
+     out. Per-keyframe timing functions switch between them mid-animation. */
+  --intro-ease-load: cubic-bezier(0.22, 1, 0.36, 1);
+  --intro-ease-settle: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* --------------------------------------------------------------------------
+   THE TWO RULES
+
+   Both start stacked at exactly the same Y — identical position, identical
+   width — so they read as one line while they grow, then separate.
+
+   --intro-dy is the distance each rule travels. The values here are correct at
+   1920x1080 and are only a fallback: each rule's resting position depends on
+   the flex layout, so a fixed constant drifts as the window height changes.
+   The measure script overwrites these with exact per-element values before the
+   first paint. They exist so that a paint arriving early, or a script that
+   fails, still starts somewhere sensible instead of somewhere absurd.
+   -------------------------------------------------------------------------- */
+[data-intro-rule="top"] {
+  --intro-dy: 55.8dvh;
+}
+
+[data-intro-rule="bottom"] {
+  --intro-dy: -29.1dvh;
+}
+
+html[data-intro="run"] [data-intro-rule] {
+  transform-origin: left center;
+  animation: intro-rule var(--intro-total) forwards;
+}
+
+@keyframes intro-rule {
+  0% {
+    transform: translateY(var(--intro-dy, 0)) scaleX(0);
+    animation-timing-function: var(--intro-ease-load);
+  }
+  43.75% {
+    transform: translateY(var(--intro-dy, 0)) scaleX(1);
+    animation-timing-function: linear;
+  }
+  53% {
+    transform: translateY(var(--intro-dy, 0)) scaleX(1);
+    animation-timing-function: var(--intro-ease-settle);
+  }
+  100% {
+    transform: translateY(0) scaleX(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   "Shuto." — shrinking into the header
+
+   transform-origin is `left top`, which does two useful things: the left edge
+   stays pinned to the page margin (the same margin in both states, so it never
+   slides sideways), and scaling never moves the top edge — which is what lets
+   the measure script compute the vertical offset as a plain subtraction.
+
+   --intro-scale is the hero-to-wordmark size ratio. Not a constant: both sizes
+   are clamped, so it's ~3.95 through the fluid range but only ~1.9 on a small
+   phone where both hit their floors. The script measures it per viewport.
+   -------------------------------------------------------------------------- */
+[data-intro-wordmark] {
+  --intro-dy: 41dvh;
+  --intro-scale: 3.95;
+}
+
+html[data-intro="run"] [data-intro-wordmark] {
+  transform-origin: left top;
+  animation: intro-wordmark var(--intro-total) forwards;
+}
+
+@keyframes intro-wordmark {
+  0%,
+  53% {
+    transform: translateY(var(--intro-dy, 0)) scale(var(--intro-scale, 1));
+    animation-timing-function: var(--intro-ease-settle);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   "Graphic Designer" — riding the line's leading edge
+
+   This is the one piece of real geometry here. At progress p the line's right
+   edge is at `margin + p x W`. The text needs its right edge in the same place.
+
+   Translating the TEXT by a percentage would move it by the text's own width,
+   which drifts. So the text sits right-aligned inside a wrapper that is exactly
+   the content width W, and the WRAPPER translates -100% -> 0. Because the
+   wrapper is W wide, -100% is exactly -W, so the text's right edge lands at
+   `margin + p x W` for every p — the same expression as the line's edge.
+
+   It shares the load-phase easing with the rules. If the easings differed, the
+   two edges would visibly separate mid-travel.
+
+   Absolutely positioned so it takes up no space in the resting layout, and
+   opacity 0 at rest so it's invisible once the intro is over.
+   -------------------------------------------------------------------------- */
+[data-intro-label] {
+  position: absolute;
+  left: var(--spacing-gutter);
+  right: var(--spacing-gutter);
+  top: calc(var(--intro-line-y) * 100dvh + 1.89vw);
+  opacity: 0;
+  pointer-events: none;
+}
+
+html[data-intro="run"] [data-intro-label] {
+  animation: intro-label var(--intro-total) forwards;
+}
+
+@keyframes intro-label {
+  0% {
+    opacity: 1;
+    transform: translateX(-100%);
+    animation-timing-function: var(--intro-ease-load);
+  }
+  43.75%,
+  53% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  75%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Everything that simply arrives at the end: nav, featured block, title,
+   caption. Held hidden until the split begins, then rises in.
+   -------------------------------------------------------------------------- */
+html[data-intro="run"] [data-intro-in] {
+  animation: intro-in var(--intro-total) forwards;
+}
+
+@keyframes intro-in {
+  0%,
+  53% {
+    opacity: 0;
+    transform: translateY(1.2vw);
+    animation-timing-function: var(--intro-ease-settle);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   REDUCED MOTION
+
+   Anyone who has asked their system to reduce motion gets the finished page
+   immediately. This isn't a lesser version of the page — it IS the page. They
+   just skip the introduction to it.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html[data-intro="run"] [data-intro-rule],
+  html[data-intro="run"] [data-intro-wordmark],
+  html[data-intro="run"] [data-intro-label],
+  html[data-intro="run"] [data-intro-in] {
+    animation: none;
+  }
+}
