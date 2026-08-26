@@ -1,6 +1,6 @@
 export default function Page() {
   return (
-    // Mobile centers the block vertically. From `lg` up, 15dvh of top padding
+    // Mobile centers the block vertically. From `lg` up, 12.8dvh of top padding
     // shifts it down so its midpoint sits at 57.5% of the viewport height —
     // the low placement in the desktop frame.
     <main className="flex min-h-dvh flex-col justify-center px-[clamp(1.5rem,4.25vw,5rem)] lg:pt-[12.8dvh]">
@@ -18,7 +18,7 @@ export default function Page() {
       </h1>
 
       <p className="mt-[1.89vw] text-right text-label leading-none font-medium">
-        Performance Designer
+        Graphic Designer
       </p>
     </main>
   );

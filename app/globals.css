@@ -61,9 +61,8 @@
      on a 4K monitor; the floor protects very small phones. */
   --text-hero: clamp(2rem, 9.85vw, 11.8rem);
 
-  /* "Performance Designer" — deliberately NOT the same curve as the hero.
-     The frame puts it around 15px on a
-     real phone; the 1rem floor holds it at a readable 16px. */
+  /* "Graphic Designer" — deliberately NOT the same curve as the hero.
+     The frame puts it near 15px on a real phone; the floor holds 16px. */
   --text-label: clamp(1rem, 3.16vw, 3.8rem);
 }
 
