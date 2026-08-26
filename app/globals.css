@@ -1,15 +1,71 @@
 @import "tailwindcss";
 
+/* ============================================================================
+   DESIGN TOKENS
+
+   Three layers, on purpose. This mirrors how Figma Variables work, so moving a
+   value from Figma to here is a copy, not a translation.
+
+   Layer 1  PRIMITIVES  — raw values with descriptive names ("this red")
+   Layer 2  SEMANTIC    — roles that point at primitives ("the accent color")
+   Layer 3  SCALES      — type sizes, spacing
+
+   Components only ever use layer 2 and 3. That indirection is what makes dark
+   mode later a change to ONE block of this file instead of a hunt through every
+   page. See the note at the bottom.
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   LAYER 1 — PRIMITIVES
+   The actual colors. Nothing in the site points at these directly.
+   Replace these values with your palette from Figma.
+   --------------------------------------------------------------------------- */
+:root {
+  --paper: oklch(0.99 0 0); /* near-white */
+  --ink: oklch(0.15 0 0); /* near-black */
+  --accent-red: oklch(0.65 0.19 25); /* placeholder accent */
+}
+
+/* ---------------------------------------------------------------------------
+   LAYER 2 — SEMANTIC TOKENS
+   Named by ROLE, not by appearance. These become the utility classes you'll see
+   in the JSX files: --color-background -> bg-background, text-background, ...
+
+   `inline` is required on this block because the values are var() references
+   rather than literal colors. Without it, Tailwind emits the wrong thing.
+   --------------------------------------------------------------------------- */
+@theme inline {
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-accent: var(--accent-red);
+
+  --font-sans: var(--font-geist);
+}
+
+/* ---------------------------------------------------------------------------
+   LAYER 3 — SCALES
+   Literal values, so a plain @theme block (no `inline`).
+   --text-hero -> the `text-hero` class.
+
+   clamp(min, preferred, max) is the web's answer to a problem Figma doesn't
+   have: the browser is a continuous range of widths, not a set of frames. This
+   says "12% of viewport width, but never smaller than 3rem or larger than 9rem."
+   --------------------------------------------------------------------------- */
 @theme {
-  /* Placeholder tokens — these are the knobs to iterate on while concepting.
-     Every token here automatically becomes a utility class:
-     --color-ink  ->  text-ink, bg-ink, border-ink, ... */
-
-  --color-ink: oklch(0.15 0 0);
-  --color-paper: oklch(0.99 0 0);
-  --color-accent: oklch(0.65 0.19 25);
-
-  --font-display: ui-sans-serif, system-ui, sans-serif;
-
   --text-hero: clamp(3rem, 12vw, 9rem);
 }
+
+/* ---------------------------------------------------------------------------
+   DARK MODE — not active for v1.
+   When you want it, it's this and nothing else:
+
+     @media (prefers-color-scheme: dark) {
+       :root {
+         --paper: oklch(0.15 0 0);
+         --ink: oklch(0.99 0 0);
+       }
+     }
+
+   Every `bg-background` and `text-foreground` in the site follows automatically,
+   because they point at roles rather than at "the white one".
+   --------------------------------------------------------------------------- */
