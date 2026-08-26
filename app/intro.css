@@ -50,16 +50,23 @@
    --intro-dy is the distance each rule travels. The values here are correct at
    1920x1080 and are only a fallback: each rule's resting position depends on
    the flex layout, so a fixed constant drifts as the window height changes.
-   The measure script overwrites these with exact per-element values before the
-   first paint. They exist so that a paint arriving early, or a script that
-   fails, still starts somewhere sensible instead of somewhere absurd.
+   The measure script computes exact values before the first paint and writes
+   them to <html> as --intro-dy-top / --intro-dy-bottom, which is why each rule
+   reads its distance through a var() rather than being assigned one directly.
+   That indirection exists for a specific reason: writing an inline style onto
+   an element React rendered causes a hydration mismatch, and React's recovery
+   discards the measurement. Writing to <html> — which is excluded from that
+   check — and mapping it here avoids the problem entirely.
+
+   The literals below are the fallbacks. They keep the animation sensible if a
+   paint arrives early or the script never runs.
    -------------------------------------------------------------------------- */
 [data-intro-rule="top"] {
-  --intro-dy: 55.8dvh;
+  --intro-dy: var(--intro-dy-top, 55.8dvh);
 }
 
 [data-intro-rule="bottom"] {
-  --intro-dy: -29.1dvh;
+  --intro-dy: var(--intro-dy-bottom, -29.1dvh);
 }
 
 html[data-intro="run"] [data-intro-rule] {
@@ -98,8 +105,8 @@ html[data-intro="run"] [data-intro-rule] {
    phone where both hit their floors. The script measures it per viewport.
    -------------------------------------------------------------------------- */
 [data-intro-wordmark] {
-  --intro-dy: 41dvh;
-  --intro-scale: 3.95;
+  --intro-dy: var(--intro-dy-wordmark, 41dvh);
+  --intro-scale: var(--intro-scale-measured, 3.95);
 }
 
 html[data-intro="run"] [data-intro-wordmark] {

@@ -28,28 +28,39 @@ const MEASURE = `
   // offsetTop and offsetHeight are layout values, and CSS transforms do not
   // affect them. That is what lets this read an element's true resting
   // position even though the intro has already transformed it elsewhere.
+  // Everything measured is written to <html>, never to the elements themselves.
+  // That is deliberate: setting an inline style on an element React rendered
+  // gives it an attribute React did not, and React reports that as a hydration
+  // mismatch — then recovers by rebuilding those elements, which throws these
+  // measurements away. <html> is already excluded from that check (see
+  // suppressHydrationWarning in layout.jsx), so writing here is safe.
+  // intro.css maps each variable onto the element that needs it.
   var rules = document.querySelectorAll("[data-intro-rule]");
   for (var i = 0; i < rules.length; i++) {
     var r = rules[i];
-    r.style.setProperty("--intro-dy", (lineY - (r.offsetTop + r.offsetHeight / 2)) + "px");
+    var dy = lineY - (r.offsetTop + r.offsetHeight / 2);
+    root.style.setProperty("--intro-dy-" + r.dataset.introRule, dy + "px");
   }
 
   var mark = document.querySelector("[data-intro-wordmark]");
   if (mark) {
     // transform-origin is "left top", so scaling never moves the top edge.
     // That is why this is a plain subtraction and not trigonometry.
-    mark.style.setProperty("--intro-dy", (markY - mark.offsetTop) + "px");
+    root.style.setProperty("--intro-dy-wordmark", (markY - mark.offsetTop) + "px");
 
     // Measure the hero-to-wordmark ratio rather than assuming it. Both sizes
     // are clamped, so the ratio is ~3.95 through the fluid range but only
     // ~1.9 on a small phone where both sizes hit their floors.
+    //
+    // The probe is created and removed inside this same synchronous block, so
+    // it leaves no trace in the DOM for React to disagree about later.
     var probe = document.createElement("span");
     probe.style.cssText = "position:absolute;visibility:hidden;font-size:var(--text-hero)";
     document.body.appendChild(probe);
     var big = parseFloat(getComputedStyle(probe).fontSize);
     var small = parseFloat(getComputedStyle(mark).fontSize);
     probe.remove();
-    if (big && small) mark.style.setProperty("--intro-scale", big / small);
+    if (big && small) root.style.setProperty("--intro-scale-measured", big / small);
   }
 
   // Let anyone cut it short. Recruiters do not wait for animations.
