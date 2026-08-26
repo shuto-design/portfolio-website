@@ -69,10 +69,18 @@ export const metadata = {
  * sessionStorage throws outright in some privacy modes, hence the try/catch.
  * Failing means no intro, which is the safe direction.
  */
+/*
+ * One deliberate difference between dev and production: sessionStorage survives
+ * a reload, so once-per-session would mean opening a new tab every time you
+ * wanted to watch the intro again. In `npm run dev` it replays on every reload
+ * so it can be iterated on; in production it plays once per session.
+ */
+const ONCE_PER_SESSION = process.env.NODE_ENV === "production";
+
 const INTRO_GATE = `
 (function () {
   try {
-    if (sessionStorage.getItem("intro") === "played") return;
+    if (${ONCE_PER_SESSION} && sessionStorage.getItem("intro") === "played") return;
     sessionStorage.setItem("intro", "played");
     document.documentElement.dataset.intro = "run";
   } catch (e) {}
