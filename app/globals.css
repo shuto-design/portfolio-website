@@ -67,6 +67,31 @@
 }
 
 /* ---------------------------------------------------------------------------
+   TYPE RULE — tracking is bound to weight
+
+   Shuto's system rule: Geist Bold always gets -5% letter spacing, Geist Medium
+   always -3%. Figma calls this kerning and states it as a percentage of the
+   font size — which is exactly what `em` means in CSS, so -5% is -0.05em.
+
+   Binding it to the weight classes means it applies automatically and can't be
+   forgotten on a new element. If one specific case ever needs to differ, a
+   `tracking-[...]` utility on that element still wins, because Tailwind's
+   utilities layer is applied after this base layer.
+
+   Caveat worth knowing: this keys off the `font-bold` / `font-medium` classes.
+   Text made bold by a <strong> tag instead would not pick it up.
+   --------------------------------------------------------------------------- */
+@layer base {
+  .font-bold {
+    letter-spacing: -0.05em;
+  }
+
+  .font-medium {
+    letter-spacing: -0.03em;
+  }
+}
+
+/* ---------------------------------------------------------------------------
    DARK MODE — not active for v1.
    When you want it, it's this and nothing else:
 

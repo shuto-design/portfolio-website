@@ -13,7 +13,7 @@ export default function Page() {
         leading-none matters: Geist's default line height would add invisible
         space under the text and push the rule away from where it's drawn.
       */}
-      <h1 className="border-b-[clamp(2px,0.21vw,4px)] pb-[2.12vw] text-hero leading-none font-bold tracking-[-0.03em]">
+      <h1 className="border-b-[clamp(2px,0.21vw,4px)] pb-[2.12vw] text-hero leading-none font-bold">
         Shuto.
       </h1>
 
