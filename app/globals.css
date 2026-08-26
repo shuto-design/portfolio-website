@@ -48,11 +48,23 @@
    --text-hero -> the `text-hero` class.
 
    clamp(min, preferred, max) is the web's answer to a problem Figma doesn't
-   have: the browser is a continuous range of widths, not a set of frames. This
-   says "12% of viewport width, but never smaller than 3rem or larger than 9rem."
+   have: the browser is a continuous range of widths, not a set of frames.
+   "10vw" means 10% of the viewport width — so the type scales continuously
+   instead of jumping at breakpoints.
+
+   Both sizes below were derived from the homepage frames. The hero measured
+   the same percentage of frame width on desktop AND mobile, which is exactly
+   what a vw value produces — the design was already proportional.
    --------------------------------------------------------------------------- */
 @theme {
-  --text-hero: clamp(3rem, 12vw, 9rem);
+  /* "Shuto." — pure proportional scaling. Ceiling stops it getting absurd
+     on a 4K monitor; the floor protects very small phones. */
+  --text-hero: clamp(2rem, 9.85vw, 11.8rem);
+
+  /* "Performance Designer" — deliberately NOT the same curve as the hero.
+     The frame puts it around 15px on a
+     real phone; the 1rem floor holds it at a readable 16px. */
+  --text-label: clamp(1rem, 3.16vw, 3.8rem);
 }
 
 /* ---------------------------------------------------------------------------
