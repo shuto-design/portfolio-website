@@ -10,7 +10,7 @@ export const metadata = {
 export default function WorkPage() {
   return (
     <main className="mx-auto max-w-4xl px-6 py-24">
-      <h1 className="text-4xl">Work</h1>
+      <h1 className="text-heading font-bold">Work</h1>
 
       <ul className="mt-16 space-y-20">
         {projects.map((project) => (
@@ -29,8 +29,8 @@ export default function WorkPage() {
                   className="object-cover"
                 />
               </div>
-              <h2 className="mt-5 text-2xl">{project.title}</h2>
-              <p className="mt-1 opacity-60">{project.summary}</p>
+              <h2 className="text-subhead mt-5">{project.title}</h2>
+              <p className="mt-1">{project.summary}</p>
             </Link>
           </li>
         ))}

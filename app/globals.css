@@ -1,84 +1,133 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   DESIGN TOKENS
+   DESIGN TOKENS — shuto.design
 
-   Three layers, on purpose. This mirrors how Figma Variables work, so moving a
-   value from Figma to here is a copy, not a translation.
+   Two ideas run this file.
 
-   Layer 1  PRIMITIVES  — raw values with descriptive names ("this red")
-   Layer 2  SEMANTIC    — roles that point at primitives ("the accent color")
-   Layer 3  SCALES      — type sizes, spacing
+   COLOR IS FLAT. One black, one white, nothing else. No accent, no grey, no
+   dark mode — so there is nothing to point through, and the two values sit
+   directly on @theme.
 
-   Components only ever use layer 2 and 3. That indirection is what makes dark
-   mode later a change to ONE block of this file instead of a hunt through every
-   page. See the note at the bottom.
+   TYPE IS A SCALE. Every size on the site is a step on a 1.333 (perfect
+   fourth) scale anchored at 16px. The steps are defined once; role names point
+   at them. Moving the featured title up a step is a one-word edit here rather
+   than a new measurement from Figma.
+
+   Pages only ever use the role names — text-heading, text-body, bg-background.
    ============================================================================ */
 
 /* ---------------------------------------------------------------------------
-   LAYER 1 — PRIMITIVES
-   The actual colors. Nothing in the site points at these directly.
-   Replace these values with your palette from Figma.
-   --------------------------------------------------------------------------- */
-:root {
-  --paper: oklch(0.99 0 0); /* near-white */
-  --ink: oklch(0.15 0 0); /* near-black */
-  --accent-red: oklch(0.65 0.19 25); /* placeholder accent */
-}
+   LITERAL VALUES — colour, weight, and the few fixed numbers
 
-/* ---------------------------------------------------------------------------
-   LAYER 2 — SEMANTIC TOKENS
-   Named by ROLE, not by appearance. These become the utility classes you'll see
-   in the JSX files: --color-background -> bg-background, text-background, ...
+   COLOUR is the whole palette, both of it. The two rules on the homepage use
+   the foreground colour deliberately: they're the same black as the type, so
+   there's no separate --color-rule that could drift out of sync with it.
 
-   `inline` is required on this block because the values are var() references
-   rather than literal colors. Without it, Tailwind emits the wrong thing.
-   --------------------------------------------------------------------------- */
-@theme inline {
-  --color-background: var(--paper);
-  --color-foreground: var(--ink);
-  --color-accent: var(--accent-red);
+   If dark mode is ever wanted, it does NOT go here as a second block. It goes
+   back to the pattern this file used to have: primitives on :root that these
+   two point at, plus one @media block that swaps the primitives. Everything
+   downstream follows, because every page names a role rather than a colour.
 
-  --font-sans: var(--font-geist);
-}
-
-/* ---------------------------------------------------------------------------
-   LAYER 3 — SCALES
-   Literal values, so a plain @theme block (no `inline`).
-   --text-hero -> the `text-hero` class.
-
-   clamp(min, preferred, max) is the web's answer to a problem Figma doesn't
-   have: the browser is a continuous range of widths, not a set of frames.
-   "10vw" means 10% of the viewport width — so the type scales continuously
-   instead of jumping at breakpoints.
-
-   Both sizes below were derived from the homepage frames. The hero measured
-   the same percentage of frame width on desktop AND mobile, which is exactly
-   what a vw value produces — the design was already proportional.
+   `--text-*: initial` and `--font-weight-*: initial` wipe Tailwind's built-in
+   scales before the real ones are declared. That's the point: text-4xl,
+   text-sm, font-light and font-black stop existing, so an off-system size or
+   weight can't be reached for by accident. Medium and Bold are the system.
    --------------------------------------------------------------------------- */
 @theme {
-  /* "Shuto." — pure proportional scaling. Ceiling stops it getting absurd
-     on a 4K monitor; the floor protects very small phones. */
-  --text-hero: clamp(2rem, 9.85vw, 11.8rem);
+  --color-background: #ffffff;
+  --color-foreground: #000000;
 
-  /* "Graphic Designer" — deliberately NOT the same curve as the hero.
-     The frame puts it near 15px on a real phone; the floor holds 16px. */
-  --text-label: clamp(1rem, 3.16vw, 3.8rem);
+  --text-*: initial;
 
-  /* --- The resolved homepage (frame 5) ------------------------------------
-     The small "Shuto." that the hero shrinks into, plus the nav, the featured
-     title and its caption. All four derived from frame 5 as a percentage of
-     frame width, then floored so they stay readable on a phone: 0.87vw is
-     3.4px at 390px wide, which is why the caption has a 14px floor. */
-  --text-wordmark: clamp(1.25rem, 2.49vw, 3rem);
-  --text-nav: clamp(0.875rem, 1.4vw, 1.75rem);
-  --text-featured: clamp(1rem, 1.68vw, 2rem);
-  --text-caption: clamp(0.875rem, 0.87vw, 1.125rem);
+  --font-weight-*: initial;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
 
-  /* The page's side margin — 2.5% of width, measured off frame 5 and now used
+  /* 120%. Set once on <body> in layout.jsx; display type overrides with
+     leading-none. */
+  --leading-body: 1.2;
+
+  /* PROVISIONAL — the one Tier 1 value still open. Today's placeholder width,
+     unchanged so nothing shifts. At 16px it runs to roughly 84 characters a
+     line, which is wider than the 60–75 that reads comfortably. One line to
+     change when the real number arrives. */
+  --container-measure: 42rem;
+
+  /* The page's side margin — 2.5% of width, measured off the frame and used
      site-wide. Sitting in the `--spacing-*` namespace makes it a real utility:
-     px-gutter, mx-gutter, and so on. intro.css reads it as var(--spacing-gutter). */
+     px-gutter, mx-gutter, and so on. */
   --spacing-gutter: clamp(1.25rem, 2.5vw, 3rem);
+}
+
+/* ---------------------------------------------------------------------------
+   TYPE SCALE — 1.333 (perfect fourth), anchored at 16px
+
+     step        px               used by
+     down 1      12.00            caption, small
+     base        16.00            body
+     up 1        16.00 → 21.33    nav
+     up 2        21.33 → 28.43    featured, subhead, quote
+     up 3        28.43 → 37.90    wordmark, heading
+
+   The three larger steps are fluid. clamp(min, Xvw, max) grows the size
+   continuously with the window rather than jumping at breakpoints — which is
+   the web's answer to a problem Figma doesn't have, where a frame is one fixed
+   width and a browser is a range.
+
+   The vw numbers look arbitrary and aren't. They're chosen so all three steps
+   reach their floor at the SAME window width, 1080px. That's what keeps the
+   1.333 ratio between them true at every width instead of only at 1440:
+
+     window     up 3     up 2     up 1
+      900px     28.43    21.33    16.00     all on their floor
+     1200px     31.59    23.69    17.77     all fluid
+     1440px     37.90    28.43    21.33     all on target
+     1920px     37.90    28.43    21.33     all capped
+
+   Divide any row by the column to its right and you get 1.333 every time.
+
+   Body and caption stay fixed. Running text shouldn't grow with the window,
+   and a caption that scaled down with it would stop being readable on a phone.
+
+   These live on :root rather than inside @theme on purpose — only the ROLE
+   names below should become utility classes. Nothing should ever say
+   text-step-up-2.
+   --------------------------------------------------------------------------- */
+:root {
+  --step-down-1: 0.75rem; /* 12.00px */
+  --step-base: 1rem; /* 16.00px */
+  --step-up-1: clamp(1rem, 1.4811vw, 1.333rem); /* 16.00 → 21.33 */
+  --step-up-2: clamp(1.333rem, 1.9743vw, 1.7769rem); /* 21.33 → 28.43 */
+  --step-up-3: clamp(1.7769rem, 2.6322vw, 2.369rem); /* 28.43 → 37.90 */
+}
+
+/* ---------------------------------------------------------------------------
+   TYPE ROLES
+
+   Named by the job, not the size — so several roles can share a step, and a
+   page never has to know which step it's on.
+
+   `inline` is required on this block because the values are var() references
+   rather than literal sizes. Without it Tailwind emits the wrong thing.
+   --------------------------------------------------------------------------- */
+@theme inline {
+  /* The homepage */
+  --text-wordmark: var(--step-up-3); /* "Shuto." */
+  --text-featured: var(--step-up-2); /* "Featured | The Many Case Studies…" */
+  --text-nav: var(--step-up-1); /* Work / Contact / Resume */
+  --text-caption: var(--step-down-1); /* the line under the second rule */
+
+  /* Everywhere else */
+  --text-heading: var(
+    --step-up-3
+  ); /* page titles — Work, About, a case study */
+  --text-subhead: var(--step-up-2); /* project titles on /work */
+  --text-quote: var(--step-up-2); /* pull quotes inside a case study */
+  --text-body: var(--step-base); /* running text */
+  --text-small: var(--step-down-1); /* captions, attributions, metadata */
+
+  --font-sans: var(--font-geist);
 }
 
 /* ---------------------------------------------------------------------------
@@ -88,15 +137,33 @@
    always -3%. Figma calls this kerning and states it as a percentage of the
    font size — which is exactly what `em` means in CSS, so -5% is -0.05em.
 
-   Binding it to the weight classes means it applies automatically and can't be
-   forgotten on a new element. If one specific case ever needs to differ, a
-   `tracking-[...]` utility on that element still wins, because Tailwind's
+   THE `*` IS LEAD, NOT LAZINESS. -3% is the default because Medium is the
+   default weight, and it's declared on `*` so that EVERY element recomputes the
+   percentage against its own font size.
+
+   This is the one genuinely counter-intuitive thing in the file. An `em` value
+   is resolved where it's declared and then inherits as a fixed pixel amount —
+   so a 28px heading that merely inherited its tracking from a 16px <body> would
+   get -0.48px, the body's -3%, instead of its own -0.85px. Visibly too loose,
+   and silent. Matching every element directly is what stops that: a rule that
+   matches always beats an inherited value, however low its specificity.
+
+   The pay-off is that tracking can't be forgotten on a new element. Write a
+   heading with no weight class at all and it still comes out Medium at -3% of
+   its own size.
+
+   `tracking-[...]` on a specific element still wins, because Tailwind's
    utilities layer is applied after this base layer.
 
-   Caveat worth knowing: this keys off the `font-bold` / `font-medium` classes.
-   Text made bold by a <strong> tag instead would not pick it up.
+   Caveat worth knowing: an element nested INSIDE a `font-bold` one falls back
+   to -3%, since `*` matches it directly. Give it `font-bold` too if that's not
+   what you want. Text made bold by a <strong> tag has the same issue.
    --------------------------------------------------------------------------- */
 @layer base {
+  * {
+    letter-spacing: -0.03em;
+  }
+
   .font-bold {
     letter-spacing: -0.05em;
   }
@@ -104,19 +171,16 @@
   .font-medium {
     letter-spacing: -0.03em;
   }
+
+  /* LINKS — nothing at rest, underline on contact.
+     Keyboard users get the underline too, on top of the browser's focus ring,
+     so tabbing through the nav shows the same thing pointing at it does. */
+  a {
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:focus-visible {
+    text-decoration: underline;
+  }
 }
-
-/* ---------------------------------------------------------------------------
-   DARK MODE — not active for v1.
-   When you want it, it's this and nothing else:
-
-     @media (prefers-color-scheme: dark) {
-       :root {
-         --paper: oklch(0.15 0 0);
-         --ink: oklch(0.99 0 0);
-       }
-     }
-
-   Every `bg-background` and `text-foreground` in the site follows automatically,
-   because they point at roles rather than at "the white one".
-   --------------------------------------------------------------------------- */

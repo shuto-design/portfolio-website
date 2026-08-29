@@ -110,22 +110,72 @@ preview URL, so you can always see a change on a real device before it's public.
 
 ## Design tokens
 
-`app/globals.css` is the seam between Figma and code. It has three layers, which
-deliberately mirror how Figma Variables work:
+`app/globals.css` is the seam between Figma and code, and it holds every value
+the site has. Two systems live in there.
 
-| Layer          | What it holds                  | Example                          |
-| -------------- | ------------------------------ | -------------------------------- |
-| **Primitives** | Raw values. Your palette.      | `--ink: oklch(0.15 0 0)`         |
-| **Semantic**   | Roles that point at primitives | `--color-foreground: var(--ink)` |
-| **Scales**     | Type sizes, spacing            | `--text-hero: clamp(...)`        |
+### Colour is flat
 
-Pages only ever use the semantic layer — `bg-background`, `text-foreground`. That
-indirection is the whole point: **dark mode later is a change to one block of
-globals.css, not a hunt through every page.** The instructions are written in a
-comment at the bottom of that file.
+```
+--color-background   #ffffff
+--color-foreground   #000000
+```
 
-Every token automatically becomes a class. `--color-accent` gives you
-`text-accent`, `bg-accent`, `border-accent`, and so on, for free.
+That's the whole palette. No accent, no grey, no dark mode — so there's nothing
+to point through and the values sit directly on `@theme`. The rules under the
+nav and under the featured title use the foreground colour deliberately: they're
+the same black as the type, so there's no separate rule colour to keep in sync.
+
+Adding dark mode later means putting the primitives layer back — two values on
+`:root` that these point at, plus one `@media` block that swaps them. Every page
+follows automatically, because pages name roles (`bg-background`) rather than
+colours.
+
+### Type is a 1.333 scale
+
+Every size on the site is a step on a perfect-fourth scale anchored at 16px:
+
+| Step   | Size          | Used by                        |
+| ------ | ------------- | ------------------------------ |
+| down 1 | 12.00         | `caption`, `small`             |
+| base   | 16.00         | `body`                         |
+| up 1   | 16.00 → 21.33 | `nav`                          |
+| up 2   | 21.33 → 28.43 | `featured`, `subhead`, `quote` |
+| up 3   | 28.43 → 37.90 | `wordmark`, `heading`          |
+
+The three larger steps are fluid: they grow with the window instead of jumping
+at breakpoints. The `vw` numbers behind them are picked so that all three reach
+their floor at the **same** window width (1080px) and their target at 1440px —
+which is what keeps the 1.333 ratio between them true at _every_ width, not just
+at one. Body and caption stay fixed, because running text shouldn't grow with
+the window and a caption that shrank with it would stop being readable.
+
+Steps are defined once, then role names point at them. Moving the featured title
+up a step is a one-word edit in that file rather than a new measurement from
+Figma.
+
+### Two weights, and tracking that can't be forgotten
+
+Geist Medium and Geist Bold. Tailwind's other weights are switched off on
+purpose — `font-light` and `font-black` don't exist, and neither do `text-4xl`
+or `text-sm`, so an off-system size or weight can't be reached for by accident.
+
+Tracking is bound to weight: Bold −5%, Medium −3%. It's declared on `*` rather
+than only on the weight classes, so **every element recomputes the percentage
+against its own font size.** That looks odd and isn't: an `em` value inherits as
+a fixed pixel amount, so a 28px heading that merely inherited its tracking from
+a 16px body would come out at the body's −0.48px instead of its own −0.85px —
+visibly loose, and silent. The upshot is you can write a new heading with no
+weight class at all and it still comes out Medium at −3% of its own size.
+
+### Still open
+
+`--container-measure` is the maximum line length for prose. It's sitting at its
+old placeholder of `42rem`, which runs to roughly 84 characters a line — wider
+than the 60–75 that reads comfortably. One line to change once you've picked it.
+
+Every token automatically becomes a class. `--text-heading` gives you
+`text-heading`; `--color-foreground` gives you `text-foreground`,
+`bg-foreground`, `border-foreground`, and so on, for free.
 
 ---
 

@@ -31,22 +31,22 @@ export default async function ProjectPage({ params }) {
 
   return (
     <main className="py-24">
-      <header className="mx-auto max-w-2xl px-6">
-        <h1 className="text-4xl">{project.title}</h1>
-        <p className="mt-4 opacity-60">{project.summary}</p>
+      <header className="max-w-measure mx-auto px-6">
+        <h1 className="text-heading font-bold">{project.title}</h1>
+        <p className="mt-4">{project.summary}</p>
 
-        <dl className="mt-10 grid grid-cols-2 gap-y-4 text-sm sm:grid-cols-3">
+        <dl className="text-small mt-10 grid grid-cols-2 gap-y-4 sm:grid-cols-3">
           <div>
-            <dt className="opacity-60">Client</dt>
-            <dd className="mt-1">{project.client}</dd>
+            <dt>Client</dt>
+            <dd className="mt-1 font-bold">{project.client}</dd>
           </div>
           <div>
-            <dt className="opacity-60">Year</dt>
-            <dd className="mt-1">{project.year}</dd>
+            <dt>Year</dt>
+            <dd className="mt-1 font-bold">{project.year}</dd>
           </div>
           <div>
-            <dt className="opacity-60">Role</dt>
-            <dd className="mt-1">{project.role}</dd>
+            <dt>Role</dt>
+            <dd className="mt-1 font-bold">{project.role}</dd>
           </div>
         </dl>
       </header>

@@ -53,54 +53,10 @@ export const metadata = {
   },
 };
 
-/**
- * Decides whether the homepage intro should play, and marks it played.
- *
- * This has to run before the browser's first paint, otherwise the finished
- * homepage would flash up for a frame before the intro started. An inline
- * script at the top of <body> executes synchronously during HTML parsing, which
- * is early enough. (Next's "Preventing Flash Before Hydration" guide covers
- * this pattern.)
- *
- * It also gives us once-per-session for free: inline scripts do not re-execute
- * on client-side navigation, so coming back from /work to / leaves the
- * attribute alone and the intro stays finished.
- *
- * sessionStorage throws outright in some privacy modes, hence the try/catch.
- * Failing means no intro, which is the safe direction.
- */
-/*
- * One deliberate difference between dev and production: sessionStorage survives
- * a reload, so once-per-session would mean opening a new tab every time you
- * wanted to watch the intro again. In `npm run dev` it replays on every reload
- * so it can be iterated on; in production it plays once per session.
- */
-const ONCE_PER_SESSION = process.env.NODE_ENV === "production";
-
-const INTRO_GATE = `
-(function () {
-  try {
-    if (${ONCE_PER_SESSION} && sessionStorage.getItem("intro") === "played") return;
-    sessionStorage.setItem("intro", "played");
-    document.documentElement.dataset.intro = "run";
-  } catch (e) {}
-})();
-`;
-
 export default function RootLayout({ children }) {
   return (
-    // suppressHydrationWarning because the script above sets a data attribute
-    // on <html> before React hydrates. Without it React would treat the
-    // attribute it did not render as a mismatch.
-    <html lang="en" className={geist.variable} suppressHydrationWarning>
-      <body className="bg-background font-sans text-foreground">
-        <script
-          type={
-            typeof window === "undefined" ? "text/javascript" : "text/plain"
-          }
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{ __html: INTRO_GATE }}
-        />
+    <html lang="en" className={geist.variable}>
+      <body className="bg-background text-body leading-body font-medium font-sans text-foreground">
         {children}
         <Analytics />
       </body>

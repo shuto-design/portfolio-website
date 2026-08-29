@@ -5,8 +5,8 @@ export const metadata = {
 // Structural placeholder. Waiting on a Figma frame.
 export default function AboutPage() {
   return (
-    <main className="mx-auto max-w-2xl px-6 py-24">
-      <h1 className="text-4xl">About</h1>
+    <main className="max-w-measure mx-auto px-6 py-24">
+      <h1 className="text-heading font-bold">About</h1>
     </main>
   );
 }

@@ -13,7 +13,7 @@ export const metadata = {
 export default function ResumePage() {
   return (
     <main className="px-gutter min-h-dvh py-24">
-      <h1 className="text-featured font-medium">Resume</h1>
+      <h1 className="text-heading font-bold">Resume</h1>
     </main>
   );
 }
