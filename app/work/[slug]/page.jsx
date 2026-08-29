@@ -30,12 +30,12 @@ export default async function ProjectPage({ params }) {
   if (!project) notFound();
 
   return (
-    <main className="py-24">
-      <header className="max-w-measure mx-auto px-6">
+    <main className="mt-6 flex-1">
+      <header className="max-w-measure">
         <h1 className="text-heading font-bold">{project.title}</h1>
-        <p className="mt-4">{project.summary}</p>
+        <p className="mt-2">{project.summary}</p>
 
-        <dl className="text-small mt-10 grid grid-cols-2 gap-y-4 sm:grid-cols-3">
+        <dl className="text-small mt-5 grid grid-cols-2 gap-y-2 sm:grid-cols-3">
           <div>
             <dt>Client</dt>
             <dd className="mt-1 font-bold">{project.client}</dd>
@@ -52,7 +52,7 @@ export default async function ProjectPage({ params }) {
       </header>
 
       {/* Your blocks, in the order they appear in projects.js */}
-      <div className="mt-20 space-y-20">
+      <div className="mt-10 space-y-10">
         {project.blocks.map((block, i) => (
           <Block key={i} block={block} />
         ))}

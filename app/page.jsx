@@ -1,52 +1,34 @@
+import Image from "next/image";
 import Link from "next/link";
+import { featured } from "./site-chrome";
 
 export default function Page() {
   return (
-    <div className="px-gutter flex min-h-dvh flex-col pt-[1.75vw] pb-[1.85vw]">
-      <header>
-        <div className="flex items-baseline justify-between">
-          <h1 className="text-wordmark leading-none font-bold">Shuto.</h1>
-
-          <nav className="text-nav flex gap-[2.35vw] leading-none font-medium">
-            <Link href="/work">Work</Link>
-            <Link href="/contact">Contact</Link>
-            <Link href="/resume">Resume</Link>
-          </nav>
-        </div>
-
-        {/*
-          The two rules are aria-hidden: the <header> and <main> landmarks
-          already tell a screen reader where the page divides, so announcing
-          these would only add noise — and an <hr> would be announced as a
-          thematic break.
-        */}
-        <div
-          aria-hidden="true"
-          className="bg-foreground mt-[0.5vw] h-[clamp(2px,0.21vw,4px)]"
+    // flex-1 claims whatever height the shell's column has left after the
+    // header and the bottom bar. The hero is the only thing on this page, so
+    // it takes all of it.
+    <main className="mt-6 flex flex-1 flex-col">
+      {/*
+        The bar underneath says "Featured Case Study", so the image has to go
+        somewhere — a full-window picture that isn't clickable is a dead end.
+        The accessible name carries both halves, since the words that label
+        this link live outside it, down in the footer.
+      */}
+      <Link
+        href={`/work/${featured.slug}`}
+        aria-label={`Featured case study: ${featured.title}`}
+        className="bg-foreground/10 relative flex-1 overflow-hidden"
+      >
+        <Image
+          src={featured.cover.src}
+          alt=""
+          fill
+          sizes="100vw"
+          quality={90}
+          priority
+          className="object-cover"
         />
-      </header>
-
-      <main className="flex flex-1 flex-col">
-        {/*
-          PLACEHOLDER — waiting on the Travelpro case study images.
-          flex-1 makes it absorb whatever height is left over, which is what
-          holds the layout at any window size rather than only at one.
-        */}
-        <div className="bg-foreground/10 mt-[3.25vw] flex-1" />
-
-        <h2 className="text-featured mt-[2.1vw] leading-none font-medium">
-          Featured | The Many Case Studies of Travelpro
-        </h2>
-
-        <div
-          aria-hidden="true"
-          className="bg-foreground mt-[0.85vw] h-[clamp(2px,0.21vw,4px)]"
-        />
-
-        <p className="text-caption mt-[1.1vw] leading-none font-medium">
-          Check out the journey of my work at Travelpro.
-        </p>
-      </main>
-    </div>
+      </Link>
+    </main>
   );
 }

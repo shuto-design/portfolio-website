@@ -20,9 +20,10 @@
 /* ---------------------------------------------------------------------------
    LITERAL VALUES — colour, weight, and the few fixed numbers
 
-   COLOUR is the whole palette, both of it. The two rules on the homepage use
-   the foreground colour deliberately: they're the same black as the type, so
-   there's no separate --color-rule that could drift out of sync with it.
+   COLOUR is the whole palette, both of it. The rule under the nav and the one
+   under the featured title use the foreground colour deliberately: they're the
+   same black as the type, so there's no separate --color-rule that could drift
+   out of sync with it.
 
    If dark mode is ever wanted, it does NOT go here as a second block. It goes
    back to the pattern this file used to have: primitives on :root that these
@@ -54,10 +55,35 @@
      change when the real number arrives. */
   --container-measure: 42rem;
 
-  /* The page's side margin — 2.5% of width, measured off the frame and used
-     site-wide. Sitting in the `--spacing-*` namespace makes it a real utility:
-     px-gutter, mx-gutter, and so on. */
-  --spacing-gutter: clamp(1.25rem, 2.5vw, 3rem);
+  /* THE BASELINE. Every spacing utility is a multiple of this.
+
+     Tailwind ships 0.25rem, which makes p-1 four pixels. Setting it to 8px
+     makes the baseline unforgeable rather than merely encouraged: p-1 is 8,
+     p-3 is 24 (the grid gutter), p-4 is 32 (the page margin), and there is no
+     way to write 12 or 20 without arbitrary-value brackets. Same move as
+     `--text-*: initial` above — take the off-system value away instead of
+     asking people to avoid it.
+
+     The trade: every number here means twice what it means in another Tailwind
+     project. mt-6 is 48px, not 24. */
+  --spacing: 0.5rem;
+
+  /* The page's side margin — 4 × 8, fixed. Sitting in the `--spacing-*`
+     namespace makes it a real utility: px-gutter, mx-gutter, and so on.
+
+     Fixed, not fluid: the 12-column grid this margin frames is specified in
+     Figma at 32/24, and a margin that drifted with the window would put the
+     grid on a different pitch at every width. */
+  --spacing-gutter: 2rem;
+
+  /* The rules under the nav and the bottom bar.
+
+     Deliberately NOT on the baseline. A hairline is a border, not spacing —
+     8px would be a bar, and a fixed 4px that reads right at 1440 is heavy at
+     390. This is the one value on the site still measured as a fraction of the
+     window, and it's allowed to be, because it's the one value whose job is to
+     stay optically the same weight rather than to position anything. */
+  --rule: clamp(2px, 0.21vw, 4px);
 }
 
 /* ---------------------------------------------------------------------------
@@ -112,10 +138,12 @@
    rather than literal sizes. Without it Tailwind emits the wrong thing.
    --------------------------------------------------------------------------- */
 @theme inline {
-  /* The homepage */
+  /* The header — every page */
   --text-wordmark: var(--step-up-3); /* "Shuto." */
+  --text-nav: var(--step-up-1); /* Work / Contact / About */
+
+  /* The homepage */
   --text-featured: var(--step-up-2); /* "Featured | The Many Case Studies…" */
-  --text-nav: var(--step-up-1); /* Work / Contact / Resume */
   --text-caption: var(--step-down-1); /* the line under the second rule */
 
   /* Everywhere else */

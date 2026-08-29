@@ -1,5 +1,8 @@
 import { Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { SiteHeader } from "./site-header";
+import { SiteFooter } from "./site-footer";
+import { HoverProvider } from "./hover-context";
 import "./globals.css";
 
 /**
@@ -53,11 +56,37 @@ export const metadata = {
   },
 };
 
+/**
+ * The page shell.
+ *
+ * Every page on the site sits inside this one div, which is what makes the
+ * header look nailed in place: the side margin, the top padding above the
+ * wordmark, and the rule's width are decided once here rather than repeated
+ * (and drifting) on each page.
+ *
+ * `min-h-dvh` + `flex flex-col` is a height chain, not decoration. The header
+ * and the bottom bar are each as tall as their contents; the page between them
+ * takes `flex-1` and absorbs everything left over. That's what pins the bar to
+ * the bottom edge on the landing and Work pages, and what lets the hero and the
+ * work grid fill the window without either one being told a height.
+ *
+ * On a long case study the same chain just grows past the window and scrolls.
+ */
+const SHELL = "px-gutter flex min-h-dvh flex-col pt-3 pb-3";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={geist.variable}>
       <body className="bg-background text-body leading-body font-medium font-sans text-foreground">
-        {children}
+        {/* The provider wraps both, because the tiles inside {children} change
+            words inside <SiteFooter />. */}
+        <HoverProvider>
+          <div className={SHELL}>
+            <SiteHeader />
+            {children}
+            <SiteFooter />
+          </div>
+        </HoverProvider>
         <Analytics />
       </body>
     </html>

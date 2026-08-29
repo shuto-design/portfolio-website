@@ -13,9 +13,20 @@ import Image from "next/image";
    arrives from your Figma frames.
    ============================================================================ */
 
-// Placeholder widths. These become real numbers once there's a Figma frame.
-const PROSE = "mx-auto max-w-measure px-6";
-const WIDE = "mx-auto max-w-4xl px-6";
+/* Placeholder widths. These become real numbers once there's a Figma frame.
+
+   No horizontal padding and no mx-auto. The shell in layout.jsx already holds
+   every page off the edge by px-gutter, and the site is anchored left — a
+   centred block would start somewhere the wordmark above it doesn't. These are
+   line-length caps, not a centred column. */
+const PROSE = "max-w-measure";
+const WIDE = "max-w-4xl";
+
+/* A "full" image is supposed to touch both edges of the window. Inside the
+   shell it would stop at the gutter instead, which would also make the
+   sizes="100vw" below a lie and pull down a larger file than it needs. The
+   negative margin cancels the shell's padding for this one block. */
+const FULL_BLEED = "-mx-gutter";
 
 function TextBlock({ body }) {
   // whitespace-pre-line means line breaks you type in projects.js show up as
@@ -30,7 +41,7 @@ function TextBlock({ body }) {
 function ImageBlock({ src, alt, aspect = "16/9", width = "contained" }) {
   const isFull = width === "full";
   return (
-    <figure className={isFull ? "" : WIDE}>
+    <figure className={isFull ? FULL_BLEED : WIDE}>
       <div
         className="relative w-full overflow-hidden"
         // aspectRatio is an inline style rather than a Tailwind class because
@@ -53,7 +64,7 @@ function ImageBlock({ src, alt, aspect = "16/9", width = "contained" }) {
 
 function DuoBlock({ items = [] }) {
   return (
-    <div className={`${WIDE} grid gap-4 sm:grid-cols-2`}>
+    <div className={`${WIDE} grid gap-2 sm:grid-cols-2`}>
       {items.map((item, i) => (
         <div
           key={i}
@@ -79,7 +90,7 @@ function QuoteBlock({ body, attribution }) {
     <figure className={PROSE}>
       <blockquote className="text-quote text-balance">{body}</blockquote>
       {attribution && (
-        <figcaption className="text-small mt-3">{attribution}</figcaption>
+        <figcaption className="text-small mt-2">{attribution}</figcaption>
       )}
     </figure>
   );
@@ -103,7 +114,7 @@ export function Block({ block }) {
   if (!Component) {
     if (process.env.NODE_ENV !== "production") {
       return (
-        <div className={`${PROSE} text-small border border-foreground p-4`}>
+        <div className={`${PROSE} text-small border border-foreground p-2`}>
           Unknown block type: <code>&quot;{block.type}&quot;</code>. Available
           types are: {Object.keys(BLOCK_TYPES).join(", ")}.
         </div>
