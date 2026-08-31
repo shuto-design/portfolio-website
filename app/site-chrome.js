@@ -25,6 +25,10 @@ export const SECTIONS = [
 /**
  * The bottom bar's two lines, per route.
  *
+ * This doubles as the list of pages that exist: a pathname that isn't a key
+ * here is a 404, and chromeFor treats it as one. So adding a route means
+ * adding a line here too.
+ *
  * TODO(shuto): "Copy Here" is the placeholder from your frames, and /about has
  * no words yet. Both are one-line edits here — no component to touch.
  */
@@ -37,6 +41,28 @@ const BAR = {
 };
 
 /**
+ * The whole chrome for a page that doesn't exist. One 404 for every miss —
+ * a typo, an old link, a case study that's been renamed.
+ *
+ * The crumb carries no href. Every other last crumb links to itself, but a
+ * 404 isn't a resource, and handing it the URL that missed would put the
+ * broken address back into the wordmark as a live link.
+ *
+ * Both values are constants rather than anything read off the URL, so the
+ * 404 HTML — built once and reused for every bad address — says the same
+ * thing the browser does. Deriving either from the path would reintroduce
+ * the hydration mismatch 604e27f fixed.
+ *
+ * TODO(shuto): your words, alongside the rest of the bar copy.
+ */
+const NOT_FOUND = {
+  crumbs: [{ href: null, label: "404" }],
+  links: SECTIONS,
+  label: "404",
+  copy: "That page isn't here.",
+};
+
+/**
  * The project the homepage leads with.
  *
  * Today that's simply the first one in projects.js, so reordering that list
@@ -44,6 +70,19 @@ const BAR = {
  * place that has to change.
  */
 export const featured = projects[0];
+
+/*
+  The homepage renders featured.cover.src and nothing else, so an empty
+  projects.js — or a first project still missing its cover — takes the build
+  down with "Cannot read properties of undefined". Fail here instead, where
+  the message says which file to open.
+*/
+if (!featured?.cover?.src) {
+  throw new Error(
+    "site-chrome.js: the homepage leads with the first project in projects.js, " +
+      "and that project needs a `cover` with a `src`. Check projects.js.",
+  );
+}
 
 /**
  * Everything the chrome needs for one pathname.
@@ -63,6 +102,10 @@ export function chromeFor(pathname) {
   const links = SECTIONS.filter((s) => s !== section);
 
   if (!section) {
+    // A pathname with no line in BAR is a page that doesn't exist.
+    const bar = BAR[pathname];
+    if (!bar) return NOT_FOUND;
+
     // /, plus the unlinked strays (/contact, /resume). They get a folder path
     // too — being unlinked doesn't mean being lost.
     const strayLabel = pathname === "/" ? null : titleCase(pathname.slice(1));
@@ -70,7 +113,7 @@ export function chromeFor(pathname) {
     return {
       crumbs: strayLabel ? [{ href: pathname, label: strayLabel }] : [],
       links: SECTIONS,
-      ...(BAR[pathname] ?? BAR["/"]),
+      ...bar,
     };
   }
 
@@ -89,6 +132,11 @@ export function chromeFor(pathname) {
         copy: project.summary,
       };
     }
+
+    // /work/nope — the section is real but the case study isn't. Falls back to
+    // the same "Shuto/404." as any other miss rather than inventing a third
+    // shape, and offers both sections, since you aren't in either one now.
+    return NOT_FOUND;
   }
 
   return { crumbs, links, ...(BAR[section.href] ?? BAR["/"]) };

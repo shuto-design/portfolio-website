@@ -11,6 +11,18 @@ export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
 
+/*
+  Every case study that exists is in projects.js, so a slug outside that list
+  is a typo or a dead link — never a page waiting to be built. `false` makes
+  those URLs stop matching this route at all, so they fall through to the same
+  prebuilt 404 as any other miss.
+
+  Without it, Next matches the route, starts rendering, then throws notFound()
+  mid-stream: the visitor gets a blank document with the 404 arriving only once
+  JavaScript loads, and no `noindex` on it.
+*/
+export const dynamicParams = false;
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
@@ -27,6 +39,8 @@ export default async function ProjectPage({ params }) {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
 
+  // dynamicParams = false already turns an unknown slug away before it reaches
+  // here. Kept as the backstop for anything that slips past it.
   if (!project) notFound();
 
   return (

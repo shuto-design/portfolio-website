@@ -71,8 +71,22 @@ export const metadata = {
  * work grid fill the window without either one being told a height.
  *
  * On a long case study the same chain just grows past the window and scrolls.
+ *
+ * THE BOTTOM IS DELIBERATELY HEAVIER THAN THE TOP — pb-4 (32px) against pt-3
+ * (24px). It isn't an optical judgement and it isn't a typo. Every browser
+ * draws its link-URL preview as a small overlay pinned to the bottom-left of
+ * the window, roughly 20-24px tall. That overlay is browser chrome, not part
+ * of the document, so no CSS can move or hide it.
+ *
+ * On /work it lands exactly where the bar's caption sits, at exactly the
+ * moment it matters: hovering a tile is both what summons the overlay AND
+ * what writes the project's summary into the bar. 24px left the caption
+ * touching it; 32px clears the tallest of them.
+ *
+ * So read this value as a safe area rather than as spacing. If the bottom bar
+ * ever stops being the last thing in the shell, this can go back to pb-3.
  */
-const SHELL = "px-gutter flex min-h-dvh flex-col pt-3 pb-3";
+const SHELL = "px-gutter flex min-h-dvh flex-col pt-3 pb-4";
 
 export default function RootLayout({ children }) {
   return (

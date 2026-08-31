@@ -25,15 +25,35 @@
    same black as the type, so there's no separate --color-rule that could drift
    out of sync with it.
 
-   If dark mode is ever wanted, it does NOT go here as a second block. It goes
-   back to the pattern this file used to have: primitives on :root that these
-   two point at, plus one @media block that swaps the primitives. Everything
-   downstream follows, because every page names a role rather than a colour.
+   DARK MODE IS OUT. Asked and answered 2026-08-29, and the answer is no: the
+   site is light, at every width, on every device. That settles what "flat"
+   means here — two values, not four. A second pair would double the palette to
+   carry a mode nobody asked for, and the point of one black and one white is
+   that there is no second value anywhere that could drift out of sync.
+
+   The browser is told the same thing outright, in the base layer at the foot of
+   this file: `color-scheme: light` is what stops Chrome on Android from
+   auto-darkening the page and keeps the scrollbar — and any control ever added
+   — on the palette rather than on the OS's idea of one.
+
+   This is a decision, not a lock. Reopening it stays exactly as cheap as it is
+   today, because every page names a role rather than a colour: primitives on
+   :root that these two point at, plus one @media block that swaps them, and
+   everything downstream follows. That price only rises if a page starts writing
+   a literal colour instead of bg-background or text-foreground — which is the
+   one thing to keep an eye on, mode or no mode.
 
    `--text-*: initial` and `--font-weight-*: initial` wipe Tailwind's built-in
    scales before the real ones are declared. That's the point: text-4xl,
    text-sm, font-light and font-black stop existing, so an off-system size or
-   weight can't be reached for by accident. Medium and Bold are the system.
+   weight can't be reached for by accident.
+
+   THE WEIGHT SET IS CLOSED. Confirmed 2026-08-29: Medium 500 and Bold 700 are
+   the whole system, sitewide — tracking -3% and -5% respectively, per the TYPE
+   RULE block below. Geist is loaded as a variable font, so 100-900 are all
+   sitting in the file the browser already downloaded; every other weight is
+   withheld by choice, not by cost. Adding one is a design decision, not a
+   technical one, and it needs its own tracking percentage to go with it.
    --------------------------------------------------------------------------- */
 @theme {
   --color-background: #ffffff;
@@ -44,6 +64,21 @@
   --font-weight-*: initial;
   --font-weight-medium: 500;
   --font-weight-bold: 700;
+
+  /* RADIUS IS ZERO, SITEWIDE. Confirmed 2026-08-29: not one corner on the site
+     is rounded — no image tile, no card, no button, and not the favicon, which
+     was squared to match. There is no --radius token, because there is no
+     radius to name; a token would only be somewhere for a second value to
+     appear.
+
+     Wiping the namespace is the same move as `--text-*: initial` above.
+     rounded-xs through rounded-4xl stop existing, so the first component that
+     wants a soft corner has to invent one out loud instead of reaching for one
+     that was already sitting there.
+
+     This follows from the design philosophy rather than from taste: keep it
+     simple. A square corner is the one that needs no decision. */
+  --radius-*: initial;
 
   /* 120%. Set once on <body> in layout.jsx; display type overrides with
      leading-none. */
@@ -165,6 +200,9 @@
    always -3%. Figma calls this kerning and states it as a percentage of the
    font size — which is exactly what `em` means in CSS, so -5% is -0.05em.
 
+   Confirmed 2026-08-29 as the complete rule: two weights, two percentages,
+   nothing else. A third weight would need a third line here.
+
    THE `*` IS LEAD, NOT LAZINESS. -3% is the default because Medium is the
    default weight, and it's declared on `*` so that EVERY element recomputes the
    percentage against its own font size.
@@ -183,13 +221,39 @@
    `tracking-[...]` on a specific element still wins, because Tailwind's
    utilities layer is applied after this base layer.
 
-   Caveat worth knowing: an element nested INSIDE a `font-bold` one falls back
-   to -3%, since `*` matches it directly. Give it `font-bold` too if that's not
-   what you want. Text made bold by a <strong> tag has the same issue.
+   NESTING HAD TO BE HANDLED, AND THE WORDMARK IS WHY. It's a path of links, so
+   `font-bold` sits on the container while every visible glyph lives in a child
+   <a> or <span>. Those children inherit the WEIGHT but not the CLASS, so `*`
+   was matching them directly at -3% — the largest type on the site, two points
+   too loose, on every page. Roughly 20px of slack in `Shuto/Work/Example
+   Project.` at 1440.
+
+   `:where()` is what makes the fix safe. It zeroes the selector's specificity,
+   so that line only ever beats the blanket `*` above it and loses to any
+   element that names its own weight. It fills silence; it never overrules a
+   decision you made.
+
+   There is deliberately NO <strong> rule. projects.js content renders as
+   escaped strings, so a <strong> can't reach the page from your side, and
+   there's no markdown parser. If a markdown block type ever arrives, it will
+   need one — that's the condition that changes this answer, and nothing else.
    --------------------------------------------------------------------------- */
 @layer base {
+  /* The palette, declared to the browser as well as to the stylesheet. Without
+     this, a visitor whose OS is set to dark gets UA-drawn parts of the page —
+     scrollbars, form controls, and Chrome-on-Android's automatic page
+     darkening — rendered against a palette this site doesn't have. See the
+     DARK MODE IS OUT note at the top of the file. */
+  html {
+    color-scheme: light;
+  }
+
   * {
     letter-spacing: -0.03em;
+  }
+
+  :where(.font-bold) * {
+    letter-spacing: -0.05em;
   }
 
   .font-bold {

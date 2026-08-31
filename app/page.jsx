@@ -25,7 +25,11 @@ export default function Page() {
           fill
           sizes="100vw"
           quality={90}
-          priority
+          /* Loads this in the <head> rather than waiting for the browser to
+             find it in the body — it's the only thing on the page, so it's
+             what the visitor is waiting for. Next 16 renamed this from
+             `priority`, which now warns. */
+          preload
           className="object-cover"
         />
       </Link>

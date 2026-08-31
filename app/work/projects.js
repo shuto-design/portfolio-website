@@ -9,6 +9,11 @@
    TO ADD A PROJECT
    1. Put your Figma exports in  public/work/your-project-slug/
    2. Copy the block below, change the values, done.
+   3. Run  npm run images  — it checks every file and, for images you haven't
+      wired up yet, prints the lines to paste in here.
+
+   IMAGES.md has the full spec: what size to export, what to call the files,
+   which formats to use, and how a cover gets cropped on a phone.
 
    TO REORDER A CASE STUDY
    Move entries around inside `blocks`. They render top to bottom.
@@ -24,10 +29,14 @@
 
    TWO FIELDS THAT MATTER MORE THAN THEY LOOK
 
-   `aspect`  The image's proportions, e.g. "16/9", "4/3", "1/1", "3/2".
-             The browser uses it to reserve the right space BEFORE the image
-             loads. Get it wrong and the page visibly jumps while loading.
-             It's the ratio of the export, not the size you want it displayed.
+   `aspect`  The image's proportions. The browser uses it to reserve the right
+             space BEFORE the image loads; get it wrong and the page visibly
+             jumps while loading, and the image is cropped to the ratio you
+             claimed instead of shown at its own.
+
+             DON'T DO THE MATH — write the export's pixel dimensions. A
+             2400x3000 file is aspect: "2400/3000". CSS takes any two numbers,
+             so that's never wrong, and npm run images checks it either way.
 
    `alt`     What the image shows, in a few words. Screen readers speak it,
              search engines read it, and it displays if an image ever fails to

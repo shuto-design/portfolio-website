@@ -43,17 +43,24 @@ export function SiteHeader() {
           <Link href="/">Shuto</Link>
 
           {crumbs.map(({ href, label }, i) => (
-            <span key={href}>
+            <span key={href ?? label}>
               {/* The separators and the full stop are aria-hidden: they're the
                   shape of the wordmark, not words. A screen reader announcing
                   "Shuto slash Work full stop" is reading the logo aloud. */}
               <span aria-hidden="true">/</span>
-              <Link
-                href={href}
-                aria-current={i === crumbs.length - 1 ? "page" : undefined}
-              >
-                {label}
-              </Link>
+              {href ? (
+                <Link
+                  href={href}
+                  aria-current={i === crumbs.length - 1 ? "page" : undefined}
+                >
+                  {label}
+                </Link>
+              ) : (
+                /* The 404's crumb, and the only one without an href. Every
+                   other last crumb links to itself; a page that doesn't exist
+                   has nothing to point at. */
+                <span aria-current="page">{label}</span>
+              )}
             </span>
           ))}
 

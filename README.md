@@ -7,15 +7,19 @@ for other engineers.
 
 ---
 
-## The three commands
+## The four commands
 
 Run these from this folder in Terminal.
 
 | Command          | What it does                                                                                     |
 | ---------------- | ------------------------------------------------------------------------------------------------ |
 | `npm run dev`    | Starts the site locally at http://localhost:3000. Edits appear instantly. Stop it with `Ctrl+C`. |
+| `npm run images` | Checks every image against the spec and tells you what's wrong. Run it after adding pictures.    |
 | `npm run build`  | Checks the whole site compiles. Run before publishing if you want certainty.                     |
 | `npm run format` | Tidies indentation and spacing in every file. Safe to run any time.                              |
+
+`npm run images` never writes to your files — it only reads and reports. Full
+image spec in **[IMAGES.md](IMAGES.md)**.
 
 You do not need the terminal for content edits. See **Editing without a terminal** below.
 
@@ -48,6 +52,10 @@ app/                        Every page of the site
 public/                     Images live here. Anything in here is public.
 └── work/<project>/         Your Figma exports, one folder per project
 
+scripts/
+└── check-images.mjs        What `npm run images` runs. Read-only, never edits
+
+IMAGES.md                   ★ THE IMAGE SPEC. Sizes, formats, naming, cropping
 next.config.mjs             Image quality + format settings
 package.json                The project's dependencies and commands
 ```
@@ -131,12 +139,19 @@ Next.js — deleting them just recreates them), `package-lock.json`, `node_modul
 
 ## Adding a project
 
-1. Export your images from Figma at 2x, as JPG or PNG.
-2. Put them in `public/work/your-project-name/`
+1. Export your images from Figma — **2560px on the long edge** for a cover or a
+   full-width image, 1800 for a contained one, 1200 for a duo half.
+2. Put them in `public/work/your-project-name/`, lowercase filenames with
+   hyphens. The folder name has to match the slug exactly.
 3. Open `app/work/projects.js`, copy the existing entry, change the values.
+4. Run `npm run images`. It checks everything and, for files you haven't wired
+   up yet, prints the `projects.js` lines ready to paste.
 
 That's it. The project appears on `/work`, gets its own page at
 `/work/your-project-name`, and is added to the sitemap automatically.
+
+**[IMAGES.md](IMAGES.md) is the full spec** — file types, size budgets, how the
+cover gets cropped on a phone, and how to write `alt`. Worth reading once.
 
 ### Case studies are made of blocks
 
@@ -157,10 +172,12 @@ a normal part of this working, not a workaround.
 
 ### Two fields that matter more than they look
 
-**`aspect`** — the image's proportions (`"16/9"`, `"4/3"`, `"1/1"`). The browser
-uses it to reserve the right amount of space _before_ the image downloads. Get it
-wrong and the page visibly jumps while loading. It's the ratio of the exported
-file, not the size you want it displayed at.
+**`aspect`** — the image's proportions. The browser uses it to reserve the right
+amount of space _before_ the image downloads; get it wrong and the page visibly
+jumps while loading. **Don't do the arithmetic — write the export's pixel
+dimensions.** A 2400x3000 file is `aspect: "2400/3000"`. CSS takes any two
+numbers, so that can't be wrong, and `npm run images` checks it against the real
+file either way.
 
 **`alt`** — what the image shows, in a few words. Screen readers speak it, search
 engines read it, and it displays if an image fails to load. Write it for someone
@@ -313,9 +330,10 @@ if not you, then Claude, guessing. Roughly half of portfolio traffic is a phone.
 **Name Figma Variables and layers deliberately.** `color/foreground/default` says
 where a value belongs. `Rectangle 47` doesn't.
 
-**Export images at 2x, don't pre-compress.** Give the good version — Next resizes,
-converts to AVIF/WebP, and serves the right size per device automatically. Nothing
-above 3840px wide is ever used, so there's no point exporting bigger.
+**Don't pre-compress images.** Give the good version — Next resizes, converts to
+AVIF/WebP, and serves the right size per device automatically, and a JPEG you've
+already squeezed just bakes its artefacts into the good one. Sizes per slot are
+in [IMAGES.md](IMAGES.md); nothing above 3840px wide is ever used.
 
 ---
 
@@ -327,6 +345,8 @@ above 3840px wide is ever used, so there's no point exporting bigger.
   Drop the file in and it wires itself up. PNG or JPG only, under 8MB.
 - The `description` in `app/layout.jsx` — currently a placeholder. This is the
   sentence under the link when someone pastes shuto.design into Slack or email.
+
+Specs for the three images are in [IMAGES.md](IMAGES.md).
 
 ---
 
