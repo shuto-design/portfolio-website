@@ -189,7 +189,7 @@ export function WorkRow({ projects }) {
   return (
     <div
       ref={scroller}
-      className={`-mr-gutter mt-6 flex min-h-0 flex-1 overflow-x-auto overflow-y-hidden ${ROW}`}
+      className="-mr-gutter flex min-h-0 flex-1 overflow-x-auto overflow-y-hidden"
     >
       <ul className="pr-gutter flex shrink-0 gap-3">
         {projects.map((project) => (
