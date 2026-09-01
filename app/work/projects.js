@@ -67,12 +67,14 @@ export const projects = [
      THE FIRST ENTRY IS THE HOMEPAGE. site-chrome.js takes projects[0] as
      `featured`, so reordering this list reorders the homepage with it.
 
-     The last two entries are empty slots, held open to see how five tiles feel
-     in the row rather than because two more projects have been picked. They are
-     the roadmap's own warning made concrete: a portfolio is averaged, not
-     summed, so five reads stronger than three only if what fills them is as
-     good as the first three. If it isn't, delete the slots — that costs nothing
-     and the site gets better.
+     FOUR AND FIVE ARE NOT MORE OF THE SAME, and shouldn't be written as if
+     they were. The first three are all Travelpro and together they argue
+     seniority: set the language, scale it, prove it sells. Three pieces at one
+     employer leave one question open — was that you, or was that Travelpro? —
+     and nothing inside Travelpro can answer it. Four and five answer it, by
+     being somewhere else. Remain Simple at a fraction of the scale, 818 with a
+     camera instead of a layout. Five pieces across three companies reads as a
+     designer; five where four are one employer reads as an employee.
 
      Every blank below is marked TODO(shuto). The final check in ROADMAP.md
      greps for exactly that string, so none of this can ship by accident —
@@ -186,77 +188,78 @@ export const projects = [
   },
 
   {
-    /* HELD SLOT. Nothing is decided about this one. Renaming it is this entry
-       plus its folder in public/work/ — the slug is the URL, so change both
-       together. Deleting it is this entry plus that folder, and nothing else
-       on the site needs to know. */
-    slug: "fourth-project",
-    title: "TODO(shuto) \u2014 fourth project",
-    // "Campaign" or "System". Nothing displays it yet; set it when you know.
+    /* SLOT FOUR IS A DIFFERENT ARGUMENT FROM THE FIRST THREE. They are all
+       Travelpro and together they say "senior". This one says "it wasn't the
+       company" — the same work, at a fraction of the scale, somewhere none of
+       Travelpro's advantages applied. Small is the point here rather than the
+       problem, which is why it was the wrong pick for slot three and the right
+       one for slot four. Don't write it as a smaller Travelpro. */
+    slug: "remain-simple",
+    title: "Remain Simple",
     category: "Campaign",
-    client: "TODO(shuto)",
+    client: "Remain Simple",
     year: "TODO(shuto)",
     role: "TODO(shuto)",
-    summary: "TODO(shuto) \u2014 one line, once you know what this one is.",
+    summary:
+      "TikTok Shop product pages, paid media assets, and the website for a small brand.",
     cover: {
-      src: "/work/fourth-project/cover.png",
+      src: "/work/remain-simple/cover.png",
       alt: "TODO(shuto)",
       aspect: "2560/3840",
     },
     blocks: [
       {
         type: "text",
-        body: "TODO(shuto) \u2014 CONTEXT. The brief, and more importantly the constraint you had to work inside.",
+        body: "TODO(shuto) \u2014 CONTEXT. The brief and the constraint, and here the constraint is the whole interest: no budget, no team, no media buyer scaling behind you. Say what you had to work with, because that is what makes the result mean something.",
       },
       {
         type: "text",
-        body: "TODO(shuto) \u2014 DECISION. What you chose, and why. The beat that gets you hired.",
+        body: "TODO(shuto) \u2014 DECISION. What you chose, and why. If you carried anything over from the Travelpro work \u2014 a rule about the opening frame, a way of sizing for a feed \u2014 say so. A method that travels is worth more than a result that doesn't.",
       },
       {
         type: "text",
-        body: "TODO(shuto) \u2014 WORK. The artifacts, large.",
+        body: "TODO(shuto) \u2014 WORK. The PDPs before and after, and the paid assets. TikTok Shop is the most current thing on this site, so lead with it rather than the Squarespace build.",
       },
       {
         type: "text",
-        body: "TODO(shuto) \u2014 OUTCOME. What happened, and how you know.",
+        body: "TODO(shuto) \u2014 OUTCOME. Check the floors in METRICS.md section 4 before quoting a rate here \u2014 a brand this size may not clear them, and a number that can't survive one question is worse than no number. A sellout, a restock, a product that moved after the page changed: all publishable, none of them need an export.\n\nAnd disclose the relationship in the credit line. It reads as maturity, and it fails a reference check if you leave it out.",
       },
     ],
   },
 
   {
-    /* HELD SLOT. Nothing is decided about this one. Renaming it is this entry
-       plus its folder in public/work/ — the slug is the URL, so change both
-       together. Deleting it is this entry plus that folder, and nothing else
-       on the site needs to know. */
-    slug: "fifth-project",
-    title: "TODO(shuto) \u2014 fifth project",
-    // "Campaign" or "System". Nothing displays it yet; set it when you know.
+    /* SLOT FIVE IS THE ONLY PLACE ON THE SITE YOU MADE THE PICTURE RATHER THAN
+       LAID ONE OUT. That's its job: an in-house team that can brief a shoot to
+       the designer already in the building tests more, cheaper. Everything else
+       here is composition and systems, so don't shrink this one to match. */
+    slug: "818-asian-fusion",
+    title: "818 Asian Fusion",
     category: "Campaign",
-    client: "TODO(shuto)",
+    client: "818 Asian Fusion",
     year: "TODO(shuto)",
     role: "TODO(shuto)",
-    summary: "TODO(shuto) \u2014 one line, once you know what this one is.",
+    summary: "Food photography and social content for a restaurant.",
     cover: {
-      src: "/work/fifth-project/cover.png",
+      src: "/work/818-asian-fusion/cover.png",
       alt: "TODO(shuto)",
       aspect: "2560/3840",
     },
     blocks: [
       {
         type: "text",
-        body: "TODO(shuto) \u2014 CONTEXT. The brief, and more importantly the constraint you had to work inside.",
+        body: "TODO(shuto) \u2014 CONTEXT. A restaurant, a kitchen, whatever light was there. Name the constraints plainly \u2014 they are the reason the pictures are an achievement rather than a booking.",
       },
       {
         type: "text",
-        body: "TODO(shuto) \u2014 DECISION. What you chose, and why. The beat that gets you hired.",
+        body: "TODO(shuto) \u2014 DECISION. The look you set, and what you rejected. This is the beat that separates a photographer from someone with a camera.",
       },
       {
         type: "text",
-        body: "TODO(shuto) \u2014 WORK. The artifacts, large.",
+        body: "TODO(shuto) \u2014 WORK. The photographs, as large as the page allows. This is the one case study where the images are the argument and the writing is the caption.",
       },
       {
         type: "text",
-        body: "TODO(shuto) \u2014 OUTCOME. What happened, and how you know.",
+        body: "TODO(shuto) \u2014 OUTCOME. Likely no ad data here, and that's fine: this project earns its place on range, not on lift. Anything real will do \u2014 what they posted, what got saved, whether they still use the pictures.\n\nThe sushi box that got killed does NOT go here. It's packaging, packaging is v2, and a cancelled project needs more room than a fifth case study should take. Park it in LATER.md.",
       },
     ],
   },
