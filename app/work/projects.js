@@ -56,7 +56,7 @@
 
 export const projects = [
   /* --------------------------------------------------------------------------
-     THE THREE, chosen Monday 2026-08-31.
+     THREE CHOSEN, TWO SLOTS HELD. Decided Monday 2026-08-31.
 
      The thesis is define → scale → prove, which is why all three are Travelpro
      and why that's a strength rather than a limitation: the rebrand sets the
@@ -66,6 +66,13 @@ export const projects = [
 
      THE FIRST ENTRY IS THE HOMEPAGE. site-chrome.js takes projects[0] as
      `featured`, so reordering this list reorders the homepage with it.
+
+     The last two entries are empty slots, held open to see how five tiles feel
+     in the row rather than because two more projects have been picked. They are
+     the roadmap's own warning made concrete: a portfolio is averaged, not
+     summed, so five reads stronger than three only if what fills them is as
+     good as the first three. If it isn't, delete the slots — that costs nothing
+     and the site gets better.
 
      Every blank below is marked TODO(shuto). The final check in ROADMAP.md
      greps for exactly that string, so none of this can ship by accident —
@@ -174,6 +181,82 @@ export const projects = [
       {
         type: "text",
         body: "TODO(shuto) — OUTCOME. Adoption rather than ad metrics: what it shipped across, and that the guidelines are what the team works from now. That is a legitimate outcome and it needs no export.",
+      },
+    ],
+  },
+
+  {
+    /* HELD SLOT. Nothing is decided about this one. Renaming it is this entry
+       plus its folder in public/work/ — the slug is the URL, so change both
+       together. Deleting it is this entry plus that folder, and nothing else
+       on the site needs to know. */
+    slug: "fourth-project",
+    title: "TODO(shuto) \u2014 fourth project",
+    // "Campaign" or "System". Nothing displays it yet; set it when you know.
+    category: "Campaign",
+    client: "TODO(shuto)",
+    year: "TODO(shuto)",
+    role: "TODO(shuto)",
+    summary: "TODO(shuto) \u2014 one line, once you know what this one is.",
+    cover: {
+      src: "/work/fourth-project/cover.png",
+      alt: "TODO(shuto)",
+      aspect: "2560/3840",
+    },
+    blocks: [
+      {
+        type: "text",
+        body: "TODO(shuto) \u2014 CONTEXT. The brief, and more importantly the constraint you had to work inside.",
+      },
+      {
+        type: "text",
+        body: "TODO(shuto) \u2014 DECISION. What you chose, and why. The beat that gets you hired.",
+      },
+      {
+        type: "text",
+        body: "TODO(shuto) \u2014 WORK. The artifacts, large.",
+      },
+      {
+        type: "text",
+        body: "TODO(shuto) \u2014 OUTCOME. What happened, and how you know.",
+      },
+    ],
+  },
+
+  {
+    /* HELD SLOT. Nothing is decided about this one. Renaming it is this entry
+       plus its folder in public/work/ — the slug is the URL, so change both
+       together. Deleting it is this entry plus that folder, and nothing else
+       on the site needs to know. */
+    slug: "fifth-project",
+    title: "TODO(shuto) \u2014 fifth project",
+    // "Campaign" or "System". Nothing displays it yet; set it when you know.
+    category: "Campaign",
+    client: "TODO(shuto)",
+    year: "TODO(shuto)",
+    role: "TODO(shuto)",
+    summary: "TODO(shuto) \u2014 one line, once you know what this one is.",
+    cover: {
+      src: "/work/fifth-project/cover.png",
+      alt: "TODO(shuto)",
+      aspect: "2560/3840",
+    },
+    blocks: [
+      {
+        type: "text",
+        body: "TODO(shuto) \u2014 CONTEXT. The brief, and more importantly the constraint you had to work inside.",
+      },
+      {
+        type: "text",
+        body: "TODO(shuto) \u2014 DECISION. What you chose, and why. The beat that gets you hired.",
+      },
+      {
+        type: "text",
+        body: "TODO(shuto) \u2014 WORK. The artifacts, large.",
+      },
+      {
+        type: "text",
+        body: "TODO(shuto) \u2014 OUTCOME. What happened, and how you know.",
       },
     ],
   },
