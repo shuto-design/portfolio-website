@@ -90,9 +90,19 @@ better portfolio sentence than any ROAS.
 **CTR** — click-through rate. `link clicks ÷ impressions.`
 Did it earn the tap. Shared a little with the copywriter, but mostly yours.
 
-> Note what this implies: **video work has better proof than static work.** Statics have
-> no hook rate and no retention curve. If one of your three case studies is video-heavy,
-> that's the one where the data will be strongest — plan the proof accordingly.
+> **Your campaign work is statics, so three of the four above don't exist for it.**
+> Hook rate, hold rate and the retention curve are all measurements of a video, and a
+> static has none of them. That leaves CTR as your only Tier 1 metric — confirmed
+> 2026-08-31, and it changes what to reach for rather than how much you have.
+>
+> What it costs you is the diagnostic richness: "the first cut lost 40% at second four,
+> so I moved the reveal to second two" is not a sentence a static can produce.
+>
+> What it doesn't touch is the two strongest proofs in [section 3](#3-six-ways-to-prove-the-contribution-was-yours),
+> because neither was ever about video. **Spend share** works identically. **The pattern
+> across many assets** works _better_, because you made far more statics than you would
+> have videos, and that argument is the one that needs volume. So lead with those two
+> and treat CTR as the supporting number rather than the headline.
 
 ### Tier 2 — yours, but shared
 
@@ -329,23 +339,40 @@ Budget an hour for this, separately. It's the half of a case study that data can
 
 ---
 
-## 9. Don't let three case studies read as one
+## 9. One proof mechanism per case study
 
-All three of your projects are paid social creative. The failure mode is three case
-studies with the same shape, the same four metrics, and different luggage in the photos.
+The five projects were chosen so that each makes a different point, and the proof
+should follow suit. Most of this is already settled by what each project _is_:
 
-**Give each one a different proof mechanism:**
+|     | Project           | The proof it rests on                                      |
+| --- | ----------------- | ---------------------------------------------------------- |
+| 1   | Asset Resizenator | Time recovered, and someone saying so. No ad data exists    |
+| 2   | Campaign Work     | Head-to-head against the control, plus spend share          |
+| 3   | ReBranding        | Adoption — what it shipped across, what the team works from |
+| 4   | Remain Simple     | Whatever clears the floor; a sellout or restock if nothing does |
+| 5   | 818 Asian Fusion  | The pictures. This one earns its place on range, not lift   |
 
-|     | Project | Proof                                  |
-| --- | ------- | -------------------------------------- |
-| 1   |         | Head-to-head against the control       |
-| 2   |         | Spend share — the budget moved onto it |
-| 3   |         | The pattern across many assets         |
+Note that only one of the five needs an export. That is a feature: it means a bad
+week in Triple Whale costs you one case study's Outcome beat rather than the site.
 
-Three different arguments read as a designer with range. Three identical arguments read
-as a designer with one trick and three clients.
+### If you split the campaign work into separate case studies
 
----
+The temptation is real — the visuals are strong and each campaign makes its own
+point, which is muddied by stacking them together. The test is one question:
+
+> **Does each split have a proof mechanism none of the others has?**
+
+If campaign A is a head-to-head against its control and campaign B is the pattern
+across thirty assets grouped by design decision, those are genuinely two case
+studies and splitting makes both stronger. If both would open with "here is a lift
+against a control," you have made one case study twice, and the second copy drags
+the average down while costing you two nights you don't have.
+
+**The pattern piece is not the leftover bin.** Grouping many assets by the design
+decision that won across them is the most senior-looking evidence in this document
+— see [section 3](#3-the-pattern-across-many-assets). Given its own case study it
+reads as a designer with a repeatable point of view, which is exactly the thing a
+hiring lead is trying to find out.
 
 ## 10. Worked example — export to published line
 
@@ -408,7 +435,9 @@ the block won't render without it.
 1. Inventory first — which ads are yours, and what each one beat.
 2. Set the date range to the campaign, never Last 365 Days.
 3. Export in pairs: yours and the control.
-4. Motion for hook rate and hold rate. Triple Whale for one line of business proof.
+4. Motion for hook rate and hold rate — but your campaign work is statics, so in
+   practice that means spend share and the pattern across assets instead. Triple
+   Whale for one line of business proof.
 5. Rates, never totals. Relative, never absolute.
 6. Check it clears the volume floor before you believe it.
 7. Say what it's compared against, and name the team.

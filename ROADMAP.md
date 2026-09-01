@@ -12,8 +12,8 @@ what's left is content. Plan your evenings accordingly.
 | **Live**    | Thursday, October 1, 2026                                                                |
 | **For**     | Landing an in-house design job                                                           |
 | **Read by** | Recruiters (skim, on a phone) and hiring design leads (read closely, want your thinking) |
-| **Scope**   | Three Travelpro case studies. Optional fourth: 818 Asian Fusion                          |
-| **Cut**     | FAU student work — see _Why the student work is out_ below                               |
+| **Scope**   | Five case studies across three companies — see _The five_ below                          |
+| **Cut**     | FAU student work; packaging held for v2 — see _What's out, and why_ below                |
 | **Time**    | ~2h a night after 6pm                                                                    |
 
 ---
@@ -24,9 +24,9 @@ Three tests a stranger has to pass. Check these in the last week, on a phone you
 haven't been building on.
 
 - [ ] **10 seconds.** They land on shuto.design and know who you are and what you do.
-- [ ] **2 minutes.** They see three pieces, understand _what you specifically did_
-      on each, and believe you'd do it again. In-house work is team work — a
-      hiring lead cannot guess your part, so say it.
+- [ ] **2 minutes.** They see the work, understand _what you specifically did_
+      on each piece, and believe you'd do it again. In-house work is team work —
+      a hiring lead cannot guess your part, so say it.
 - [ ] **The exit.** The moment they want you, contacting you is one obvious click,
       and your resume is findable.
 
@@ -56,21 +56,57 @@ no code in it: you choose, Claude asks questions. A build night implements
 something already decided. Mixing the two is what makes an evening feel like
 nothing happened.
 
-**3. Cut the fourth project before you cut a week.** If you're behind, 818 goes
-first, then depth on the third case study. Never the polish week.
+**3. Cut a project before you cut a week.** The cut order is fixed, so that
+being behind is never also a decision: **818 goes first, then Remain Simple,
+then depth on the ReBranding.** Never the polish week, and never the first two —
+the Resizenator and the campaign work are the portfolio.
 
 ---
 
-## Why the student work is out
+## The five
+
+Chosen Monday 2026-08-31. The order below is the order in `projects.js`, which
+is also the order they appear on `/work` — and the first one is the homepage.
+
+|     | Project               | Client        | The point it makes                            |
+| --- | --------------------- | ------------- | --------------------------------------------- |
+| 1   | Asset Resizenator     | Travelpro     | You build systems                             |
+| 2   | Campaign Work         | Travelpro     | Your creative performs                        |
+| 3   | ReBranding            | Travelpro     | You can originate, not only execute           |
+| 4   | Remain Simple         | Remain Simple | It wasn't the company                         |
+| 5   | 818 Asian Fusion      | 818           | You can make the picture, not only place it   |
+
+**The first three are one argument at three altitudes** — set the visual
+language, make it produceable at volume, prove it wins in market. Define, scale,
+prove. Nobody does all three by accident, which is why three pieces at one
+employer is a strength here rather than a limitation.
+
+**Four and five answer the question the first three can't.** Three case studies
+at one company leave a hiring lead wondering how much was you and how much was
+Travelpro — a good brand, a real budget, a media buyer scaling behind you.
+Nothing inside Travelpro settles that. Remain Simple settles it by being a
+fraction of the scale with none of those advantages; 818 by being a camera
+rather than a layout. Five pieces across three companies reads as a designer.
+Five where four are one employer reads as an employee.
+
+So **don't write four and five like smaller Travelpro case studies.** They have
+a different job and they should be shorter — see the night budget in Phase 1.
+
+## What's out, and why
 
 **A portfolio is averaged, not summed.** Every piece drags the mean toward
-itself. Three strong pieces read as _"strong designer."_ Three strong pieces
-plus three student pieces read as _"designer who can't tell the difference"_ —
-and to a hiring design lead that's a worse signal than a short portfolio.
+itself. Five strong pieces read as _"strong designer."_ Five strong pieces plus
+three student pieces read as _"designer who can't tell the difference"_ — and to
+a hiring design lead that's a worse signal than a short portfolio.
 
-818 Asian Fusion is a different case. Framed as _commercial photography for a
-small business_ it shows range, and range counts for in-house roles. It's the
-optional fourth, not a requirement.
+**FAU student work** is out on that argument, and on a better one: it argues for
+a different job. v1 says Performance Designer — someone whose work is measured.
+Student work can't make that claim, whatever its craft.
+
+**Packaging is out until v2**, on the same reasoning rather than on quality.
+FC5, Maykha, the killed 818 sushi box: they argue Paper Engineer, and a site
+that argues two things argues neither. Park them in `LATER.md`. This is a
+sequencing decision, not a verdict — v2 is where that case gets made properly.
 
 ---
 
@@ -82,13 +118,13 @@ Barely any code. This week exists so that everything after it is cheaper.
 
 | Night    | Task                                                                                                                                                                                                                                                                                                                                                                          |
 | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Mon 8/31 | **Pick the three.** List everything you _could_ show, then cut. Don't pre-filter the list — it's easier to cut than to remember something you left off.                                                                                                                                                                                                                       |
+| ~~Mon 8/31~~ | ~~**Pick the three.**~~ **Done** — five picked, and the positioning under them: Performance Designer, packaging held for v2. See _The five_ above.                                                                                                                                                                                                                            |
 | Tue 9/1  | **Inventory the ad accounts.** Read [METRICS.md](METRICS.md) first, then list, per project, which ads were yours and which ad each one beat. You have Triple Whale and Motion access, so most of this is yours to pull — the only true dependency is one colleague confirming the credit line and saying yes to publishing relative figures. Ask for that in writing tonight. |
 | Wed 9/2  | **Read [IMAGES.md](IMAGES.md) end to end.** It already answers "how do I resize and export assets." Then do one test export and run `npm run images`.                                                                                                                                                                                                                         |
 | Thu 9/3  | **Design-token session.** Close every open value. Claude writes `DESIGN.md`.                                                                                                                                                                                                                                                                                                  |
 | Fri/wknd | **Write the site's 40 words.** Homepage line, meta description, the bottom-bar copy for each page. Small, but it _is_ the 10-second test.                                                                                                                                                                                                                                     |
 
-- [ ] Three projects chosen
+- [x] Five projects chosen — 2026-08-31
 - [ ] METRICS.md read, ad inventory written, disclosure confirmed in writing
 - [ ] IMAGES.md read, one test export run through `npm run images`
 - [ ] `DESIGN.md` written
@@ -132,9 +168,30 @@ IMAGES.md, and commit messages — nobody can hold it in their head, including y
 
 The long pole. This is where the project is won or lost.
 
-### The ritual — three nights per project
+### The night budget
 
-Same three nights every time, so you never open a blank page.
+**Five projects do not all cost the same, and budgeting them as if they did is
+how this phase overruns.** Three nights each would be fifteen nights inside a
+fourteen-night phase — every evening spoken for, with the roadmap's most likely
+risk (a case study taking four nights) having nowhere to go.
+
+| Project                   | Nights | Why                                                        |
+| ------------------------- | ------ | ---------------------------------------------------------- |
+| Asset Resizenator         | 3      | Carries the seniority argument                             |
+| Campaign Work             | 3      | The most evidence to assemble, and the control comparison  |
+| ReBranding                | 3      | Before/after, and the origination claim                    |
+| Remain Simple             | 2      | Its job is transferability, not depth                      |
+| 818 Asian Fusion          | 2      | Its job is range. The pictures are the argument            |
+|                           | **13** | in 14 nights, plus Labour Day                              |
+
+Writing four and five shorter is the right call editorially as well as
+practically: five case studies of identical length read as five equal claims,
+which isn't what you're arguing.
+
+### The ritual — three nights, or two
+
+Same nights every time, so you never open a blank page. **On a two-night
+project, Assemble and Write share the first night and Edit takes the second.**
 
 **Night 1 — Assemble.** Pull every asset. Crop the cover to the middle 40% of
 the width and middle 60% of the height (the rule in IMAGES.md — the cover gets
@@ -154,17 +211,23 @@ Run `npm run images` until it's clean.
 **Night 3 — Edit.** Cut it in half. Read it out loud. Then check it answers
 _"what did **you** do"_ — not what the team did.
 
-> **Labor Day, Monday September 7, is a free full day.** Do all three Assemble
-> nights at once and buy yourself the slack you'll want in week four.
+> **Labor Day, Monday September 7, is a free full day.** Do the Travelpro
+> Assemble nights together — same accounts, same export session, three projects'
+> worth of pulling in one sitting — and buy yourself the slack you'll want in
+> week four. This is the single highest-value day in the phase.
 
 ### Project tracker
 
-| Project              | Assets | Written | Edited | Data |
-| -------------------- | ------ | ------- | ------ | ---- |
-| 1.                   | ☐      | ☐       | ☐      | ☐    |
-| 2.                   | ☐      | ☐       | ☐      | ☐    |
-| 3.                   | ☐      | ☐       | ☐      | ☐    |
-| 4. _(818, optional)_ | ☐      | ☐       | ☐      | —    |
+`Data` is ticked when the Outcome beat is settled — which for three of these
+means deciding there are no numbers and writing it without them.
+
+| Project                     | Assets | Written | Edited | Data |
+| --------------------------- | ------ | ------- | ------ | ---- |
+| 1. Asset Resizenator        | ☐      | ☐       | ☐      | ☐    |
+| 2. Campaign Work            | ☐      | ☐       | ☐      | ☐    |
+| 3. ReBranding               | ☐      | ☐       | ☐      | ☐    |
+| 4. Remain Simple            | ☐      | ☐       | ☐      | ☐    |
+| 5. 818 Asian Fusion         | ☐      | ☐       | ☐      | —    |
 
 ---
 
@@ -227,7 +290,8 @@ Deferred on purpose, to protect the date. None of these are failures.
   token rewrite. It's recoverable in full — `git show 604e27f:app/intro.css`.
   Rebuild it in October, after launch.
 - FAU student work, and any archive page to house it
-- 818 Asian Fusion, unless it comes together easily as the fourth
+- All packaging — FC5, Maykha, the killed 818 sushi box. Held for v2, where the
+  Paper Engineer case gets made properly instead of muddying this one
 - A writing or blog section
 - Tests, linting, CI
 
@@ -244,8 +308,11 @@ In order of likelihood.
    read of what's currently visible in your account; check them in week one,
    not week four. Either way, have a version of each Outcome section that works
    without numbers.
-2. **Case studies take four nights instead of three.** The most likely failure.
-   Labor Day covers one project's slippage; 818 is already the first thing to cut.
+2. **Case studies take four nights instead of three.** The most likely failure,
+   and five projects leave it one night of slack rather than five. Labor Day
+   covers one project's slippage. After that the cut order in rule 3 is the
+   valve, and it is fixed on purpose so that being behind never also costs you
+   an evening deciding what to drop.
 3. **Scope creep in week four**, when the site starts looking good and the ideas
    start arriving. That's what the freeze and `LATER.md` are for.
 
