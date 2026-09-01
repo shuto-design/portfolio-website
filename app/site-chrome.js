@@ -85,20 +85,32 @@ if (!featured?.cover?.src) {
 }
 
 /**
- * Is this pathname a case study that actually exists?
+ * Does this page get a bottom bar?
  *
- * The bottom bar is hidden on those pages — see site-footer.jsx — because it
- * would only repeat the project's name and summary, both of which the page
- * already shows above the work.
+ * The bar earns its place where it says something the page doesn't. It labels
+ * the homepage's full-bleed hero, which has no other caption. It names the tile
+ * you're pointing at on /work, which is the only label those tiles have. It
+ * carries the whole message on a 404.
  *
- * IT HAS TO CHECK THE REAL LIST rather than "anything under /work/". A typo'd
- * slug renders the 404, and the 404 needs its bar: it is the only place that
- * says "That page isn't here."
+ * It does NOT earn it on a case study, where its two lines are the project's
+ * name and summary and both are already above the work — the name in the
+ * wordmark, the summary under it. Nor on /about, where it would say "About"
+ * beneath a wordmark reading "Shuto/About."
+ *
+ * /contact and /resume keep theirs for an unglamorous reason: they are unlinked
+ * stubs with almost nothing on them, and without the bar they would render as a
+ * header over an empty page. When either gets real content, add it here.
+ *
+ * THE CASE-STUDY TEST IS AGAINST THE REAL LIST rather than "anything under
+ * /work/". A typo'd slug renders the 404, and the 404 needs its bar: it is the
+ * only place that says "That page isn't here."
  */
-export function isCaseStudy(pathname) {
+export function showsBar(pathname) {
+  if (pathname === "/about") return false;
+
   const prefix = "/work/";
-  if (!pathname.startsWith(prefix)) return false;
-  return projects.some((p) => p.slug === pathname.slice(prefix.length));
+  if (!pathname.startsWith(prefix)) return true;
+  return !projects.some((p) => p.slug === pathname.slice(prefix.length));
 }
 
 /**
