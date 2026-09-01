@@ -68,11 +68,12 @@ const TILE = "aspect-[2/3]";
   which fits with a slice of the next one showing. On any window wide enough,
   the row is shorter than the cap and this line does nothing at all.
 
-  WHAT IT COSTS: where the cap bites, the row no longer reaches the bottom bar,
-  so a phone gets a band of white between the two. Pushing the row down to
-  close that gap needs align-self, and align-self is what currently gives every
-  tile its height — see the note on the row below. Worth revisiting when the
-  phone layout is designed in Figma; not worth a workaround before then.
+  IT SITS ON THE SCROLL CONTAINER, NOT ON THE ROW INSIDE IT. Capping the inner
+  row instead leaves the container at full height with the tiles short inside
+  it — which puts the horizontal scrollbar adrift in the white space below
+  them, and hands the leftover height to a box that can't be positioned. Capped
+  here, the container is exactly as tall as the tiles, and the leftover becomes
+  free space in <main>, which justify-end can then put somewhere deliberate.
 */
 const ROW = "max-h-[117vw]";
 
@@ -188,9 +189,9 @@ export function WorkRow({ projects }) {
   return (
     <div
       ref={scroller}
-      className="-mr-gutter mt-6 flex min-h-0 flex-1 overflow-x-auto overflow-y-hidden"
+      className={`-mr-gutter mt-6 flex min-h-0 flex-1 overflow-x-auto overflow-y-hidden ${ROW}`}
     >
-      <ul className={`pr-gutter flex shrink-0 gap-3 ${ROW}`}>
+      <ul className="pr-gutter flex shrink-0 gap-3">
         {projects.map((project) => (
           <li
             key={project.slug}
