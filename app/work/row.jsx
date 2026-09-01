@@ -50,11 +50,31 @@ import { useShowing } from "../showing-context";
    won't move the bar. That's the cost of the rule, and it's the right trade:
    the machine has a mouse, and the mouse is how it's meant to be asked.
 
-   THE ROW RUNS PAST THE PAGE MARGIN ON PURPOSE. -mr-gutter lets it reach the
-   window edge, so mid-scroll a tile is always sliced off — and that sliver is
-   the only thing telling anyone there's more work to the right. pr-gutter on
-   the track puts the margin back at the far end, so scrolled all the way over,
-   the last tile sits the same 32px off the edge as the first one does.
+   THE PAGE MARGIN IS A RESTING POSITION, NOT A WHITE BAND. -mx-gutter pulls
+   the scroll container out past the page margin on BOTH sides so it spans the
+   whole window, and the margin goes back inside the track as scrolling space:
+   pl-gutter at the head, and mr-gutter on the last tile at the tail. Both
+   scroll with the content, so the first tile rests 32px in, the last one rests
+   32px short, and every tile in between runs clean off both edges.
+
+   Left as a real margin on one side — which it was, on the left — the tiles get
+   clipped 32px in from that edge and a strip of white sits there permanently
+   through the whole scroll, on one side only. Symmetrical or not at all.
+
+   THE TAIL IS AN EMPTY PSEUDO-ELEMENT, and it has to be, which is worth the
+   paragraph because every more obvious way of writing it silently does nothing.
+
+   padding-right on the track: ignored. A margin on the last tile: ignored. Both
+   measured at 0px where 32 was intended. The cause is that a tile has no
+   INTRINSIC width — its width comes from the aspect ratio once its height is
+   known, which happens during layout, while a container's content width is
+   worked out before that. So the track's content is three zero-width boxes, it
+   sizes itself to 112px, the tiles overflow it, and anything living at the
+   track's own right edge sits back at 112px where the scroll never reaches.
+
+   A pseudo-element with a width of its own is a real box in that measurement,
+   so it lands after the last tile and the scroll runs out 32px short of the
+   window edge — which is the whole point.
    ============================================================================ */
 
 const TILE = "aspect-[2/3]";
@@ -189,9 +209,13 @@ export function WorkRow({ projects }) {
   return (
     <div
       ref={scroller}
-      className="-mr-gutter flex min-h-0 flex-1 overflow-x-auto overflow-y-hidden"
+      className="-mx-gutter flex min-h-0 flex-1 overflow-x-auto overflow-y-hidden"
     >
-      <ul className="pr-gutter flex shrink-0 gap-3">
+      {/* The tail margin is a pseudo-element, and -ml-3 cancels the gap the
+          row would otherwise put in front of it, so it measures the gutter
+          exactly. See the note on the scroll container for why it can't be
+          padding or a margin. */}
+      <ul className="pl-gutter after:w-gutter flex shrink-0 gap-3 after:-ml-3 after:shrink-0 after:content-['']">
         {projects.map((project) => (
           <li
             key={project.slug}
