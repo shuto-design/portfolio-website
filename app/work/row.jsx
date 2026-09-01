@@ -34,12 +34,21 @@ import { useShowing } from "../showing-context";
    instruction ("Hover over work to see") that couldn't be followed. So the
    tile filling the screen writes its own name into the bar as you swipe.
 
-   It only does this WHEN THE ROW ACTUALLY SCROLLS, and that condition is doing
-   more work than it looks like. If every tile fits at once there is no "current
-   tile" to report — you can see them all — and hovering really is how you'd ask
-   about one, so the instruction is correct and stays. The moment the row
-   overflows, there is a current tile, and the bar names it. One rule, and the
-   copy is right at both ends of it without a breakpoint deciding anything.
+   TWO CONDITIONS TURN THAT ON, and it is off unless both hold.
+
+   The row has to actually overflow. If every tile fits at once there is no
+   "current tile" to report — you can see them all.
+
+   And the device has to be unable to hover. Where a pointer exists, an empty
+   bar is not a gap to fill: "Hover over work to see" is a live instruction, and
+   replacing it with a project name the moment the mouse leaves would answer a
+   question nobody asked and hide the one hint the page offers.
+
+   `(hover: hover)` is the question, rather than a width breakpoint or a user
+   agent. It asks about the PRIMARY pointer, so a laptop with a touchscreen
+   counts as a hovering device and keeps the instruction — swiping the row there
+   won't move the bar. That's the cost of the rule, and it's the right trade:
+   the machine has a mouse, and the mouse is how it's meant to be asked.
 
    THE ROW RUNS PAST THE PAGE MARGIN ON PURPOSE. -mr-gutter lets it reach the
    window edge, so mid-scroll a tile is always sliced off — and that sliver is
@@ -98,6 +107,9 @@ export function WorkRow({ projects }) {
     every frame of a swipe. Its `root` is the row itself, not the window, so
     "visible" means visible in the row rather than visible on the page.
 
+    Nothing observes anything on a machine with a mouse — see the note above
+    the component. This whole effect is dormant on your laptop.
+
     Every tile is the same size, so comparing how much of each one is showing
     is a fair fight, and the winner is the one the eye would call current.
   */
@@ -142,22 +154,33 @@ export function WorkRow({ projects }) {
       }
     };
 
-    /* Watch only while the row overflows. Resizing a window across that line —
-       or turning a phone sideways — has to switch this on and off, which is
-       what the ResizeObserver is for; without it, a row that started wide
-       enough would never begin reporting when it stopped being. */
+    /* Both conditions, re-checked whenever either could have changed.
+
+       Resizing a window across the overflow line — or turning a phone sideways
+       — switches this on and off, which is what the ResizeObserver is for.
+       Without it, a row that started wide enough would never begin reporting
+       when it stopped being.
+
+       The media query can change too: plugging a mouse into a tablet flips
+       `(hover: hover)` mid-session, and the bar should follow the pointer from
+       that moment rather than until the next reload. */
+    const canHover = window.matchMedia("(hover: hover)");
+
     const sync = () => {
       const scrolls = root.scrollWidth - root.clientWidth > 1;
-      if (scrolls && !observer) watch();
-      else if (!scrolls && observer) clear();
+      const wanted = scrolls && !canHover.matches;
+      if (wanted && !observer) watch();
+      else if (!wanted && observer) clear();
     };
 
     sync();
     const resize = new ResizeObserver(sync);
     resize.observe(root);
+    canHover.addEventListener("change", sync);
 
     return () => {
       resize.disconnect();
+      canHover.removeEventListener("change", sync);
       clear();
     };
   }, [projects, setVisible]);

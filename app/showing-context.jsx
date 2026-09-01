@@ -23,11 +23,11 @@ import { createContext, useContext, useMemo, useState } from "react";
    to point at the third tile, the bar should say the third tile no matter what
    the scroll position happens to be.
 
-   Between them they cover both ways of using the page. A mouse hovers and
-   never scrolls the row far; a thumb scrolls and cannot hover at all. Neither
-   is "the mobile one" — nothing here asks what kind of device this is, which
-   is deliberate. A laptop with a touchscreen does whichever its owner is
-   actually doing, and gets it right without being detected.
+   Between them they cover both ways of using the page: a mouse hovers, a thumb
+   scrolls. Only one of them is ever live at a time — the row doesn't report
+   its scroll position on a device that can hover, because there an empty bar
+   means "Hover over work to see", which is an instruction rather than a gap.
+   That decision lives in row.jsx, next to the observer it switches off.
    ============================================================================ */
 
 const ShowingContext = createContext({
