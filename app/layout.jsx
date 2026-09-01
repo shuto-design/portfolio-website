@@ -2,7 +2,7 @@ import { Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
-import { HoverProvider } from "./hover-context";
+import { ShowingProvider } from "./showing-context";
 import "./globals.css";
 
 /**
@@ -94,13 +94,13 @@ export default function RootLayout({ children }) {
       <body className="bg-background text-body leading-body font-medium font-sans text-foreground">
         {/* The provider wraps both, because the tiles inside {children} change
             words inside <SiteFooter />. */}
-        <HoverProvider>
+        <ShowingProvider>
           <div className={SHELL}>
             <SiteHeader />
             {children}
             <SiteFooter />
           </div>
-        </HoverProvider>
+        </ShowingProvider>
         <Analytics />
       </body>
     </html>

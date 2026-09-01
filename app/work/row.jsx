@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
-import { useHover } from "../hover-context";
+import { useEffect, useRef } from "react";
+import { useShowing } from "../showing-context";
 
 /* ============================================================================
    THE WORK ROW
@@ -27,6 +27,19 @@ import { useHover } from "../hover-context";
    against a parent whose own height comes from flex-grow — which the browser
    treats as indefinite. Written as `h-full` the whole row collapses to nothing
    and the page renders empty. Verified, twice; don't refactor it back.
+
+   THE BAR FOLLOWS THE SCROLL, WHICH IS THE ONLY LABEL A PHONE GETS. A tile
+   carries no text, so its name lives in the bottom bar — and on a touchscreen
+   nothing can hover, which left the row as unlabelled grey rectangles under an
+   instruction ("Hover over work to see") that couldn't be followed. So the
+   tile filling the screen writes its own name into the bar as you swipe.
+
+   It only does this WHEN THE ROW ACTUALLY SCROLLS, and that condition is doing
+   more work than it looks like. If every tile fits at once there is no "current
+   tile" to report — you can see them all — and hovering really is how you'd ask
+   about one, so the instruction is correct and stays. The moment the row
+   overflows, there is a current tile, and the bar names it. One rule, and the
+   copy is right at both ends of it without a breakpoint deciding anything.
 
    THE ROW RUNS PAST THE PAGE MARGIN ON PURPOSE. -mr-gutter lets it reach the
    window edge, so mid-scroll a tile is always sliced off — and that sliver is
@@ -54,8 +67,17 @@ const TILE = "aspect-[2/3]";
 */
 const ROW = "max-h-[117vw]";
 
+/*
+  How finely the observer reports a tile's visibility: every 5%. It only calls
+  back when a tile crosses one of these, so this is the trade — too few and the
+  bar changes late and visibly, too many and a swipe fires callbacks it has no
+  use for. Twenty steps is smooth at a thumb's speed.
+*/
+const STEPS = Array.from({ length: 21 }, (_, i) => i / 20);
+
 export function WorkRow({ projects }) {
-  const { setHovered } = useHover();
+  const { setHovered, setVisible } = useShowing();
+  const scroller = useRef(null);
 
   /*
     Clear the hover when this row goes away.
@@ -68,18 +90,98 @@ export function WorkRow({ projects }) {
   */
   useEffect(() => () => setHovered(null), [setHovered]);
 
+  /*
+    Report whichever tile is most of what you can see.
+
+    An IntersectionObserver rather than a scroll handler: "which of these is on
+    screen" is the question it exists to answer, and it doesn't run code on
+    every frame of a swipe. Its `root` is the row itself, not the window, so
+    "visible" means visible in the row rather than visible on the page.
+
+    Every tile is the same size, so comparing how much of each one is showing
+    is a fair fight, and the winner is the one the eye would call current.
+  */
+  useEffect(() => {
+    const root = scroller.current;
+    if (!root) return;
+
+    const ratios = new Map();
+    let observer = null;
+
+    const clear = () => {
+      observer?.disconnect();
+      observer = null;
+      ratios.clear();
+      setVisible(null);
+    };
+
+    const watch = () => {
+      observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            ratios.set(entry.target.dataset.slug, entry.intersectionRatio);
+          }
+
+          let winner = null;
+          let most = 0;
+          for (const [slug, ratio] of ratios) {
+            if (ratio > most) {
+              most = ratio;
+              winner = slug;
+            }
+          }
+
+          const project = projects.find((p) => p.slug === winner);
+          setVisible(project ? show(project) : null);
+        },
+        { root, threshold: STEPS },
+      );
+
+      for (const tile of root.querySelectorAll("[data-slug]")) {
+        observer.observe(tile);
+      }
+    };
+
+    /* Watch only while the row overflows. Resizing a window across that line —
+       or turning a phone sideways — has to switch this on and off, which is
+       what the ResizeObserver is for; without it, a row that started wide
+       enough would never begin reporting when it stopped being. */
+    const sync = () => {
+      const scrolls = root.scrollWidth - root.clientWidth > 1;
+      if (scrolls && !observer) watch();
+      else if (!scrolls && observer) clear();
+    };
+
+    sync();
+    const resize = new ResizeObserver(sync);
+    resize.observe(root);
+
+    return () => {
+      resize.disconnect();
+      clear();
+    };
+  }, [projects, setVisible]);
+
   return (
-    <div className="-mr-gutter mt-6 flex min-h-0 flex-1 overflow-x-auto overflow-y-hidden">
+    <div
+      ref={scroller}
+      className="-mr-gutter mt-6 flex min-h-0 flex-1 overflow-x-auto overflow-y-hidden"
+    >
       <ul className={`pr-gutter flex shrink-0 gap-3 ${ROW}`}>
         {projects.map((project) => (
-          <li key={project.slug} className={`${TILE} shrink-0`}>
+          <li
+            key={project.slug}
+            data-slug={project.slug}
+            className={`${TILE} shrink-0`}
+          >
             <Link
               href={`/work/${project.slug}`}
               className="bg-foreground/10 relative block h-full w-full overflow-hidden"
               /*
-                Focus as well as hover. The bar is the only place a tile's
-                title appears, so wiring this to the mouse alone would leave
-                someone tabbing through the row with identical squares.
+                Focus as well as hover — the third way of pointing at a tile,
+                alongside the pointer and the scroll position. The bar is the
+                only place a tile's title appears, so wiring this to the mouse
+                alone would leave someone tabbing through identical squares.
 
                 Tabbing is also how a keyboard scrolls this row: the browser
                 brings each link into view as it's focused, which is why the

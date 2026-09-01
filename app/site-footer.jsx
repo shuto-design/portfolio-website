@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { chromeFor } from "./site-chrome";
-import { useHover } from "./hover-context";
+import { useShowing } from "./showing-context";
 
 /* ============================================================================
    THE BOTTOM BAR
@@ -13,31 +13,31 @@ import { useHover } from "./hover-context";
    you scroll to reach it. Same markup either way — no fixed positioning, so it
    never covers anything.
 
-   The words come from site-chrome.js, except on /work where hovering a tile
-   takes over.
+   The words come from site-chrome.js, except on /work, where whichever tile
+   you're pointing at — or have scrolled the row to — takes over.
    ============================================================================ */
 
 export function SiteFooter() {
   const pathname = usePathname();
-  const { hovered } = useHover();
+  const { showing: fromRow } = useShowing();
 
   const base = chromeFor(pathname);
 
   // The provider lives in the layout and outlives a navigation, so a project
-  // hovered just before clicking through would otherwise still be showing on
-  // the page you landed on. Only the grid page honours it.
-  const showing = pathname === "/work" && hovered ? hovered : base;
+  // pointed at just before clicking through would otherwise still be showing
+  // on the page you landed on. Only /work honours it.
+  const bar = pathname === "/work" && fromRow ? fromRow : base;
 
   return (
     <footer className="mt-4">
-      <p className="text-featured leading-none font-bold">{showing.label}</p>
+      <p className="text-featured leading-none font-bold">{bar.label}</p>
 
       {/* aria-hidden for the same reason as the rule under the nav — see
           site-header.jsx. */}
       <div aria-hidden="true" className="bg-foreground mt-1 h-[var(--rule)]" />
 
       <p className="text-caption mt-2 leading-none font-medium">
-        {showing.copy}
+        {bar.copy}
       </p>
     </footer>
   );
