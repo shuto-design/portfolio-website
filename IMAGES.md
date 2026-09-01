@@ -78,7 +78,7 @@ shapes, and in each one it's cropped to fill:
 
 | Where                  | Box at a typical size          | Shape             |
 | ---------------------- | ------------------------------ | ----------------- |
-| Tile on `/work`        | 326 x 288 (1440 x 900 window)  | roughly square    |
+| Tile on `/work`        | 433 x 646 (1440 x 900 window)  | **2 : 3, tall**   |
 | Homepage hero, desktop | 1376 x 648 (1440 x 900 window) | **2.1 : 1, wide** |
 | Homepage hero, phone   | 326 x 610 (iPhone 390 x 844)   | **1 : 1.9, tall** |
 
@@ -93,10 +93,16 @@ everywhere is only about **a quarter of it** — and it's the middle quarter.
 
 So for a cover:
 
-- **Export 4:3 — 2560 x 1920.** Closest to the tile, so the tile looks most like
-  the thing you designed.
+- **Export 4:3 — 2560 x 1920.** No longer the shape of any of the three, but
+  still the one that loses the least across all of them. The tile went from
+  square to 2:3 tall on 2026-08-31, and the honest choice now is between this
+  compromise and exporting 2:3 so the tile is uncropped — which would buy you a
+  perfect tile at the cost of the homepage hero keeping only the middle third
+  of the height. Worth closing on Thursday, with the rest of the tokens.
 - **Keep anything that must survive inside the middle 40% of the width and the
-  middle 60% of the height.** A face, a logo, the product, the one word of type
+  middle 60% of the height.** This rule did not change when the tile did — the
+  phone hero still crops harder than the tile does, so it's still what sets the
+  safe rectangle. A face, a logo, the product, the one word of type
   that matters. Draw that rectangle in Figma once and keep it as a guide.
 - **Let the edges be atmosphere.** Texture, colour, background — things that read
   fine when half of them are gone.
