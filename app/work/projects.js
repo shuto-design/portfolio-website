@@ -83,7 +83,7 @@ export const projects = [
     cover: {
       src: "/work/asset-resizenator/cover.png",
       alt: "TODO(shuto)",
-      aspect: "800/600",
+      aspect: "2560/3840",
     },
     blocks: [
       {
@@ -117,7 +117,7 @@ export const projects = [
     cover: {
       src: "/work/campaign-work/cover.png",
       alt: "TODO(shuto)",
-      aspect: "800/600",
+      aspect: "2560/3840",
     },
     blocks: [
       {
@@ -156,7 +156,7 @@ export const projects = [
     cover: {
       src: "/work/rebranding/cover.png",
       alt: "TODO(shuto)",
-      aspect: "800/600",
+      aspect: "2560/3840",
     },
     blocks: [
       {

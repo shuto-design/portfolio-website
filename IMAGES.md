@@ -11,8 +11,9 @@ right. It's written to be followed from memory after a couple of goes.
 ## The short version
 
 1. **Export** from Figma. JPG for photography, PNG for flat colour and type.
-   **2560px on the long edge** for anything full-width, 1800 for a contained
-   image, 1200 for one half of a duo.
+   **2560px WIDE** for a cover or anything full-width, 1800 for a contained
+   image, 1200 for one half of a duo. Width, not the long edge — a cover is
+   portrait, so 2560 wide makes it 3840 tall.
 2. **Name it** in lowercase with hyphens: `poster-front.jpg`. No capitals, no
    spaces.
 3. **Drop it** in `public/work/<your-project-slug>/`. The folder name and the
@@ -93,17 +94,18 @@ everywhere is only about **a quarter of it** — and it's the middle quarter.
 
 So for a cover:
 
-- **Export 4:3 — 2560 x 1920.** No longer the shape of any of the three, but
-  still the one that loses the least across all of them. The tile went from
-  square to 2:3 tall on 2026-08-31, and the honest choice now is between this
-  compromise and exporting 2:3 so the tile is uncropped — which would buy you a
-  perfect tile at the cost of the homepage hero keeping only the middle third
-  of the height. Worth closing on Thursday, with the rest of the tokens.
-- **Keep anything that must survive inside the middle 40% of the width and the
-  middle 60% of the height.** This rule did not change when the tile did — the
-  phone hero still crops harder than the tile does, so it's still what sets the
-  safe rectangle. A face, a logo, the product, the one word of type
-  that matters. Draw that rectangle in Figma once and keep it as a guide.
+- **Export 2:3 — 2560 x 3840.** Closed 2026-08-31, when the `/work` tile became
+  2:3. Matching the tile means the row of covers — the surface anyone actually
+  browses — is uncropped and looks exactly like what you designed. The bill for
+  that lands on the desktop homepage hero, which now keeps only a wide band
+  through the middle. Compose the cover so that band is a picture in its own
+  right and you've paid it.
+- **Keep anything that must survive inside the middle 80% of the width and the
+  middle 30% of the height.** A face, a logo, the product, the one word of type
+  that matters. It's a letterbox through the centre now rather than the upright
+  rectangle it was when covers were 4:3 — the desktop hero is what sets it.
+  The placeholder `cover.png` in every project folder has that rectangle drawn
+  on it, so you can drop the file into Figma and trace it once.
 - **Let the edges be atmosphere.** Texture, colour, background — things that read
   fine when half of them are gone.
 
