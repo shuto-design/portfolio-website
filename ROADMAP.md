@@ -80,16 +80,16 @@ optional fourth, not a requirement.
 
 Barely any code. This week exists so that everything after it is cheaper.
 
-| Night    | Task                                                                                                                                                                               |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Mon 8/31 | **Pick the three.** List everything you _could_ show, then cut. Don't pre-filter the list — it's easier to cut than to remember something you left off.                            |
-| Tue 9/1  | **Send the performance-data ask.** Longest lead time of anything on this roadmap, because it depends on other people replying. Send it, then chase it in the background all month. |
-| Wed 9/2  | **Read [IMAGES.md](IMAGES.md) end to end.** It already answers "how do I resize and export assets." Then do one test export and run `npm run images`.                              |
-| Thu 9/3  | **Design-token session.** Close every open value. Claude writes `DESIGN.md`.                                                                                                       |
-| Fri/wknd | **Write the site's 40 words.** Homepage line, meta description, the bottom-bar copy for each page. Small, but it _is_ the 10-second test.                                          |
+| Night    | Task                                                                                                                                                                                                                                                                                                                                                                          |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Mon 8/31 | **Pick the three.** List everything you _could_ show, then cut. Don't pre-filter the list — it's easier to cut than to remember something you left off.                                                                                                                                                                                                                       |
+| Tue 9/1  | **Inventory the ad accounts.** Read [METRICS.md](METRICS.md) first, then list, per project, which ads were yours and which ad each one beat. You have Triple Whale and Motion access, so most of this is yours to pull — the only true dependency is one colleague confirming the credit line and saying yes to publishing relative figures. Ask for that in writing tonight. |
+| Wed 9/2  | **Read [IMAGES.md](IMAGES.md) end to end.** It already answers "how do I resize and export assets." Then do one test export and run `npm run images`.                                                                                                                                                                                                                         |
+| Thu 9/3  | **Design-token session.** Close every open value. Claude writes `DESIGN.md`.                                                                                                                                                                                                                                                                                                  |
+| Fri/wknd | **Write the site's 40 words.** Homepage line, meta description, the bottom-bar copy for each page. Small, but it _is_ the 10-second test.                                                                                                                                                                                                                                     |
 
 - [ ] Three projects chosen
-- [ ] Performance-data request sent
+- [ ] METRICS.md read, ad inventory written, disclosure confirmed in writing
 - [ ] IMAGES.md read, one test export run through `npm run images`
 - [ ] `DESIGN.md` written
 - [ ] The site's 40 words written
@@ -100,6 +100,9 @@ Barely any code. This week exists so that everything after it is cheaper.
       lands on one page reading `Shuto/404.`
 - [x] A guardrail on the homepage's featured project, so an empty or broken
       `projects.js` fails with a sentence naming the file instead of a cryptic error
+- [x] `METRICS.md` and a `metrics` block — what each ad metric means, which of
+      them are actually yours to claim, the click-by-click for Triple Whale and
+      Motion, and somewhere on the page for the numbers to land
 - [ ] Commit the image pipeline (`IMAGES.md`, `scripts/`, `npm run images`) —
       still untracked, so a fresh copy of the repo doesn't have it
 - [ ] Settle `--container-measure` — currently ~84 characters a line against a
@@ -234,9 +237,13 @@ Deferred on purpose, to protect the date. None of these are failures.
 
 In order of likelihood.
 
-1. **The performance data doesn't arrive.** It depends on other people. That's
-   why it's the first thing you do. Have a version of each Outcome section that
-   works without numbers.
+1. **The performance data doesn't support a claim.** Not that it fails to
+   arrive — you have the access. The risk is that your work sits behind too
+   little spend to be statistically real, or that no clean control exists to
+   compare it against. [METRICS.md](METRICS.md) has the volume floors and a
+   read of what's currently visible in your account; check them in week one,
+   not week four. Either way, have a version of each Outcome section that works
+   without numbers.
 2. **Case studies take four nights instead of three.** The most likely failure.
    Labor Day covers one project's slippage; 818 is already the first thing to cut.
 3. **Scope creep in week four**, when the site starts looking good and the ideas

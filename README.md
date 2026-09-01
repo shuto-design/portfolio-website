@@ -56,6 +56,7 @@ scripts/
 └── check-images.mjs        What `npm run images` runs. Read-only, never edits
 
 IMAGES.md                   ★ THE IMAGE SPEC. Sizes, formats, naming, cropping
+METRICS.md                  ★ Ad metrics: what they mean, which are yours to claim
 next.config.mjs             Image quality + format settings
 package.json                The project's dependencies and commands
 ```

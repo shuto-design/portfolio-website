@@ -96,11 +96,69 @@ function QuoteBlock({ body, attribution }) {
   );
 }
 
+/* The Outcome beat of a case study. Numbers inside a paragraph read as
+   bragging; numbers in a row read as evidence — that's the whole reason this
+   block exists instead of a sentence in a TextBlock.
+
+   `note` is required, and not as decoration. Every figure in here is a
+   comparison — "+38%" against WHAT? — and the note is where that comparison
+   gets stated. A lift with no baseline attached isn't a modest claim, it's an
+   unfalsifiable one, so the block refuses to render without it. The reasoning,
+   and how to arrive at these numbers honestly, is in METRICS.md.
+
+   ONE THING TO SETTLE IN FIGMA: the case-study header already sets label/value
+   pairs one way (page.jsx, the Client/Year/Role list — small, bold, on a grid).
+   This block sets them another (hairline rules, the figure at subhead size),
+   because the header is metadata you skim and this is the evidence you're meant
+   to stop on. Two treatments of the same shape on one page is a real decision,
+   though, and it's yours — not mine to make in a placeholder. */
+function MetricsBlock({ items = [], note }) {
+  const rows = items.filter((item) => item?.label && item?.change);
+
+  if (!rows.length || !note) {
+    if (process.env.NODE_ENV !== "production") {
+      return (
+        <div className={`${PROSE} text-small border border-foreground p-2`}>
+          A <code>metrics</code> block needs a <code>note</code> saying what the
+          figures are compared against, plus at least one <code>items</code>{" "}
+          entry with both a <code>label</code> and a <code>change</code>. Fix it
+          in <code>app/work/projects.js</code>.
+        </div>
+      );
+    }
+    return null;
+  }
+
+  return (
+    <figure className={PROSE}>
+      {/* A description list, because that is literally what this is: terms and
+          their values. Screen readers announce the two as a pair; a stack of
+          divs would read as six unrelated fragments. */}
+      <dl>
+        {rows.map((item, i) => (
+          <div
+            key={i}
+            /* flex-wrap is the entire mobile story. At 390px a long label and
+               its figure stop fitting on one line, so the figure drops to the
+               next line instead of pushing the page sideways. */
+            className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-t border-foreground py-2"
+          >
+            <dt className="text-small">{item.label}</dt>
+            <dd className="text-subhead">{item.change}</dd>
+          </div>
+        ))}
+      </dl>
+      <figcaption className="text-small mt-2">{note}</figcaption>
+    </figure>
+  );
+}
+
 const BLOCK_TYPES = {
   text: TextBlock,
   image: ImageBlock,
   duo: DuoBlock,
   quote: QuoteBlock,
+  metrics: MetricsBlock,
 };
 
 /**
