@@ -16,9 +16,9 @@ export default function WorkPage() {
       THE CAP LIVES HERE, ON <main>, AND THAT IS WHAT PUTS THE LEFTOVER BELOW
       THE BAR.
 
-      The row is capped on a phone — see row.jsx for the arithmetic. Whichever
-      box carries that cap is the box that stops growing, and the free space
-      then collects wherever that box's parent puts it.
+      The row is capped on a phone — see row.jsx for where the number comes
+      from. Whichever box carries that cap is the box that stops growing, and
+      the free space then collects wherever that box's parent puts it.
 
       Cap the row and the free space is trapped inside <main>, above the bar,
       which is the band of white this replaced. Cap <main> instead and the free
@@ -38,7 +38,7 @@ export default function WorkPage() {
       On a window wide enough for the row to fill, the cap never binds, <main>
       takes the height it always did, and there is no free space to place.
     */
-    <main className="mt-6 flex max-h-[117vw] flex-1 flex-col">
+    <main className="mt-6 flex max-h-[calc(150vw-6.75rem)] flex-1 flex-col">
       <WorkRow projects={projects} />
     </main>
   );
