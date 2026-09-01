@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { chromeFor } from "./site-chrome";
+import { chromeFor, isCaseStudy } from "./site-chrome";
 import { useShowing } from "./showing-context";
 
 /* ============================================================================
@@ -15,11 +15,20 @@ import { useShowing } from "./showing-context";
 
    The words come from site-chrome.js, except on /work, where whichever tile
    you're pointing at — or have scrolled the row to — takes over.
+
+   THERE IS NO BAR ON A CASE STUDY. Its two lines are the project's name and
+   summary, and both are already on the page — the name in the wordmark at the
+   top, the summary under it. A long read ending in a restatement of its own
+   title adds a beat that says nothing.
    ============================================================================ */
 
 export function SiteFooter() {
   const pathname = usePathname();
   const { showing: fromRow } = useShowing();
+
+  // Hooks first, then the bail-out: React requires the same hooks to run on
+  // every render of a component, so this cannot move above them.
+  if (isCaseStudy(pathname)) return null;
 
   const base = chromeFor(pathname);
 

@@ -15,8 +15,8 @@ export const metadata = {
  */
 export default function ResumePage() {
   return (
-    <main className="mt-6 flex-1">
-      <h1 className="text-heading font-bold">Resume</h1>
-    </main>
+    /* Empty on purpose until the PDF exists. The wordmark above reads
+       "Shuto/Resume." on its own — see site-header.jsx. */
+    <main className="mt-6 flex-1" />
   );
 }

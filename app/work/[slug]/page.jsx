@@ -45,9 +45,12 @@ export default async function ProjectPage({ params }) {
 
   return (
     <main className="mt-6 flex-1">
+      {/* No <h1> here on purpose. The wordmark above already reads
+          "Shuto/Work/Asset Resizenator." — printing the same words again,
+          larger, twenty pixels below, says nothing the header didn't. The
+          heading role moved up there with the words; see site-header.jsx. */}
       <header className="max-w-measure">
-        <h1 className="text-heading font-bold">{project.title}</h1>
-        <p className="mt-2">{project.summary}</p>
+        <p>{project.summary}</p>
 
         <dl className="text-small mt-5 grid grid-cols-2 gap-y-2 sm:grid-cols-3">
           <div>

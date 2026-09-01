@@ -85,6 +85,23 @@ if (!featured?.cover?.src) {
 }
 
 /**
+ * Is this pathname a case study that actually exists?
+ *
+ * The bottom bar is hidden on those pages — see site-footer.jsx — because it
+ * would only repeat the project's name and summary, both of which the page
+ * already shows above the work.
+ *
+ * IT HAS TO CHECK THE REAL LIST rather than "anything under /work/". A typo'd
+ * slug renders the 404, and the 404 needs its bar: it is the only place that
+ * says "That page isn't here."
+ */
+export function isCaseStudy(pathname) {
+  const prefix = "/work/";
+  if (!pathname.startsWith(prefix)) return false;
+  return projects.some((p) => p.slug === pathname.slice(prefix.length));
+}
+
+/**
  * Everything the chrome needs for one pathname.
  *
  *   crumbs  the folder path after "Shuto", each one a link

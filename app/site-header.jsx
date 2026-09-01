@@ -29,12 +29,25 @@ export function SiteHeader() {
   const { crumbs, links } = chromeFor(pathname);
 
   /*
-    The wordmark is the <h1> on the homepage and a plain <div> everywhere else.
-    On /work the page's own title is the real heading — two <h1>s on one page is
-    worse than none, and a screen reader reading "Shuto." as the title of every
-    page tells you nothing about which page you're on.
+    The wordmark is the page's <h1>, on every page.
+
+    It used to be a heading only on the homepage, because a case study drew its
+    own title underneath and two <h1>s are worse than none. That title is gone —
+    it was the same words the wordmark was already showing — so the heading role
+    follows the words up here.
+
+    It earns the role because the wordmark is a path rather than a logo: it
+    reads "Shuto/Work/Asset Resizenator." and names the page you are on, which
+    is exactly what an <h1> is for. The separators are aria-hidden, so it is
+    announced as "Shuto Work Asset Resizenator".
+
+    No page draws its own any more. /about, /contact, /resume and the 404 each
+    printed a heading that was the same word the wordmark was already showing —
+    "Shuto/About." over "About" — so they went the same way the case study's
+    title did. If a page ever needs a heading of its own again, this has to go
+    back to being conditional: two on one page is the thing being avoided here.
   */
-  const Wordmark = pathname === "/" ? "h1" : "div";
+  const Wordmark = "h1";
 
   return (
     <header>

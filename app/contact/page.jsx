@@ -14,8 +14,10 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <main className="max-w-measure mt-6 flex-1">
-      <h1 className="text-heading font-bold">Contact</h1>
-      <p className="mt-3">
+      {/* No <h1>: the wordmark above already reads "Shuto/Contact." — see
+          site-header.jsx. Printing the same word again underneath it was the
+          duplication this page had before the heading moved up there. */}
+      <p>
         <a href="mailto:shutocody@gmail.com">shutocody@gmail.com</a>
       </p>
     </main>

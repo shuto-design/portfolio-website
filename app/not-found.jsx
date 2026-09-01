@@ -14,9 +14,10 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <main className="max-w-measure mt-6 flex-1">
-      <h1 className="text-heading font-bold">404</h1>
-
-      <p className="mt-3">
+      {/* No <h1>: the wordmark above already reads "Shuto/404." — see
+          site-header.jsx. Printing the same word again underneath it was the
+          duplication this page had before the heading moved up there. */}
+      <p>
         That page doesn&rsquo;t exist. The <Link href="/work">work</Link> is
         probably what you came for.
       </p>
