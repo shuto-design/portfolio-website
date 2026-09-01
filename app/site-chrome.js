@@ -25,12 +25,14 @@ export const SECTIONS = [
 /**
  * The bottom bar's two lines, per route.
  *
- * This doubles as the list of pages that exist: a pathname that isn't a key
- * here is a 404, and chromeFor treats it as one. So adding a route means
- * adding a line here too.
+ * THIS DOUBLES AS THE LIST OF PAGES THAT EXIST: a pathname that isn't a key
+ * here is a 404, and chromeFor treats it as one. So adding a route means adding
+ * a line here too — and /about has to keep its line even though its bar is no
+ * longer drawn, or the page itself stops existing.
  *
- * TODO(shuto): "Copy Here" is the placeholder from your frames, and /about has
- * no words yet. Both are one-line edits here — no component to touch.
+ * TODO(shuto): "Copy Here" is the placeholder from your frames. Only the lines
+ * for the routes in WITH_BAR are ever read, so / and /work are the two worth
+ * writing. One-line edits here — no component to touch.
  */
 const BAR = {
   "/": { label: "Featured Case Study", copy: "Copy Here" },
@@ -53,7 +55,9 @@ const BAR = {
  * thing the browser does. Deriving either from the path would reintroduce
  * the hydration mismatch 604e27f fixed.
  *
- * TODO(shuto): your words, alongside the rest of the bar copy.
+ * `label` and `copy` are no longer drawn anywhere — a 404 has no bar; see
+ * WITH_BAR below. They stay so that every chromeFor return has the same shape,
+ * and so the words are already written if the bar ever comes back here.
  */
 const NOT_FOUND = {
   crumbs: [{ href: null, label: "404" }],
@@ -85,32 +89,29 @@ if (!featured?.cover?.src) {
 }
 
 /**
- * Does this page get a bottom bar?
+ * The pages that get a bottom bar.
  *
  * The bar earns its place where it says something the page doesn't. It labels
- * the homepage's full-bleed hero, which has no other caption. It names the tile
- * you're pointing at on /work, which is the only label those tiles have. It
- * carries the whole message on a 404.
+ * the homepage's full-bleed hero, which has no other caption, and it names the
+ * tile you're pointing at on /work, which is the only label those tiles have.
  *
- * It does NOT earn it on a case study, where its two lines are the project's
- * name and summary and both are already above the work — the name in the
- * wordmark, the summary under it. Nor on /about, where it would say "About"
- * beneath a wordmark reading "Shuto/About."
+ * Everywhere else it was repeating the wordmark. A case study's two lines are
+ * the project's name and summary, both already above the work. /about's would
+ * be "About" under a wordmark reading "Shuto/About." The 404's were "404" and a
+ * sentence the page says better in its own words.
  *
- * /contact and /resume keep theirs for an unglamorous reason: they are unlinked
- * stubs with almost nothing on them, and without the bar they would render as a
- * header over an empty page. When either gets real content, add it here.
+ * /contact and /resume are here for an unglamorous reason rather than a
+ * principled one: they are unlinked stubs with almost nothing on them, and
+ * without the bar they would render as a header over an empty page. When either
+ * gets real content, take it out of this list.
  *
- * THE CASE-STUDY TEST IS AGAINST THE REAL LIST rather than "anything under
- * /work/". A typo'd slug renders the 404, and the 404 needs its bar: it is the
- * only place that says "That page isn't here."
+ * A positive list rather than a set of exclusions, because it also gets 404s
+ * right for free — an address that isn't a page isn't in here either.
  */
-export function showsBar(pathname) {
-  if (pathname === "/about") return false;
+const WITH_BAR = new Set(["/", "/work", "/contact", "/resume"]);
 
-  const prefix = "/work/";
-  if (!pathname.startsWith(prefix)) return true;
-  return !projects.some((p) => p.slug === pathname.slice(prefix.length));
+export function showsBar(pathname) {
+  return WITH_BAR.has(pathname);
 }
 
 /**
